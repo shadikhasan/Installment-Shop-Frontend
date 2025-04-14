@@ -93,16 +93,16 @@ const _nav = [
     name: 'Pages',
     icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
     items: [
-      {
-        component: CNavItem,
-        name: 'Login',
-        to: '/login',
-      },
-      {
-        component: CNavItem,
-        name: 'Register',
-        to: '/register',
-      },
+      // {
+      //   component: CNavItem,
+      //   name: 'Login',
+      //   to: '/login',
+      // },
+      // {
+      //   component: CNavItem,
+      //   name: 'Register',
+      //   to: '/register',
+      // },
       {
         component: CNavItem,
         name: 'Error 404',
@@ -119,7 +119,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Full Admin Access',
-    to: '/admin',
+    to: 'http://127.0.0.1:8000/admin',
     icon: <CIcon icon={cibOpenAccess} customClassName="nav-icon" />,
   },
 ]

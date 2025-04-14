@@ -34,8 +34,8 @@ const Login = () => {
       })
 
       // Store the JWT tokens (you can store them in localStorage or a state management tool like Redux)
-      localStorage.setItem('access', response.data.access)
-      localStorage.setItem('refresh', response.data.refresh)
+      localStorage.setItem('access_token', response.data.access)
+      localStorage.setItem('refresh_token', response.data.refresh)
 
       // Redirect to a protected route or dashboard
       navigate('/dashboard') // Change '/dashboard' to the desired route

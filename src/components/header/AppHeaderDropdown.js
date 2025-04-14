@@ -38,8 +38,8 @@ const AppHeaderDropdown = () => {
 
     // Redirect to login after short delay
     setTimeout(() => {
-      navigate('/dashboard')
-    }, 2000)
+      navigate('/login')
+    }, 100)
   }
 
   return (
@@ -74,7 +74,7 @@ const AppHeaderDropdown = () => {
           <CBadge color="secondary" className="ms-2">42</CBadge>
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem onClick={handleLogout}>
+        <CDropdownItem href="#" onClick={handleLogout}>
           <CIcon icon={cilAccountLogout} className="me-2" />
           Logout
         </CDropdownItem>

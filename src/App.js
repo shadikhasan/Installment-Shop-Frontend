@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import OTPVerify from './views/pages/register/OTPVerify'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import PrivateRoute from './components/PrivateRoute'
 
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
@@ -53,8 +54,15 @@ const App = () => {
           <Route path="/otp-verify" element={<OTPVerify />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
-          <Route path="*" name="Home" element={<DefaultLayout />} />
-          
+          <Route
+            path="*"
+            name="Home"
+            element={
+              <PrivateRoute>
+                <DefaultLayout />
+              </PrivateRoute>
+            }
+          />
         </Routes>
         <ToastContainer position="top-right" autoClose={2000} theme="colored" />
       </Suspense>
