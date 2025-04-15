@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   CContainer,
@@ -34,6 +34,8 @@ const AppHeader = () => {
 
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
+
+  const isLoggedIn = localStorage.getItem('access_token') !== null
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
@@ -128,7 +130,23 @@ const AppHeader = () => {
           <li className="nav-item py-1">
             <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
           </li>
-          <AppHeaderDropdown />
+
+          {isLoggedIn ? (
+            <AppHeaderDropdown />
+          ) : (
+            <>
+              <CNavItem>
+                <CNavLink to="/login" as={NavLink}>
+                  Login
+                </CNavLink>
+              </CNavItem>
+              <CNavItem>
+                <CNavLink to="/register" as={NavLink}>
+                  Register
+                </CNavLink>
+              </CNavItem>
+            </>
+          )}
         </CHeaderNav>
       </CContainer>
       <CContainer className="px-4" fluid>

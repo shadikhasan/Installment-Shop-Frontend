@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { authAxios } from '../../../axiosConfig'
 import {
   CButton,
   CCard,
@@ -18,7 +19,7 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
 const Login = () => {
-  const [email, setEmail] = useState('')  // Changed from username to email
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
@@ -27,20 +28,28 @@ const Login = () => {
     e.preventDefault()
 
     try {
-      // Send the POST request to the backend
-      const response = await axios.post('http://127.0.0.1:8000/accounts/login/', {
-        email,  // Sending email instead of username
-        password,
+      // Send the POST request to the login endpoint
+      const response = await authAxios.post('/accounts/login/', { email, password })
+
+      const { access, refresh } = response.data
+
+      // Store the tokens in localStorage
+      localStorage.setItem('access_token', access)
+      localStorage.setItem('refresh_token', refresh)
+
+      // Fetch profile data using the access token
+      const profileResponse = await authAxios.get('/accounts/profile/', {
+        headers: { Authorization: `Bearer ${access}` },
       })
 
-      // Store the JWT tokens (you can store them in localStorage or a state management tool like Redux)
-      localStorage.setItem('access_token', response.data.access)
-      localStorage.setItem('refresh_token', response.data.refresh)
+      // Store user role data in localStorage
+      const { is_staff, is_superuser } = profileResponse.data
+      localStorage.setItem('is_staff', is_staff)
+      localStorage.setItem('is_superuser', is_superuser)
 
-      // Redirect to a protected route or dashboard
+      // Redirect to a protected route after successful login
       navigate('/dashboard') // Change '/dashboard' to the desired route
     } catch (err) {
-      // Handle any error from the backend (e.g., wrong credentials)
       setError('Invalid credentials or error occurred.')
     }
   }
@@ -65,7 +74,7 @@ const Login = () => {
                         placeholder="Email"
                         autoComplete="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}  // Handle email change
+                        onChange={(e) => setEmail(e.target.value)}
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
@@ -77,7 +86,7 @@ const Login = () => {
                         placeholder="Password"
                         autoComplete="current-password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}  // Handle password change
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </CInputGroup>
                     <CRow>

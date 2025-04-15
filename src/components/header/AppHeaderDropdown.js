@@ -23,12 +23,20 @@ import avatar8 from './../../assets/images/avatars/8.jpg'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
+
+
 const AppHeaderDropdown = () => {
+  
   const navigate = useNavigate()
+
+  const isLoggedIn = localStorage.getItem('access_token') !== null
 
   const handleLogout = () => {
     // Remove token from localStorage (adjust key if different)
-    localStorage.removeItem('access_token')
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('is_staff');
+    localStorage.removeItem('is_superuser');
 
     // Show logout success toast
     toast.success('Successfully logged out!', {
