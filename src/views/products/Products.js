@@ -19,6 +19,9 @@ import 'react-toastify/dist/ReactToastify.css'
 
 const Products = () => {
   const [products, setProducts] = useState([])
+  const [filteredProducts, setFilteredProducts] = useState([])
+  const [searchQuery, setSearchQuery] = useState('')
+
   const [showModal, setShowModal] = useState(false)
   const [editProduct, setEditProduct] = useState(null)
   const [formData, setFormData] = useState({ name: '', description: '', price: '' })
@@ -41,6 +44,10 @@ const Products = () => {
   }, [])
 
   useEffect(() => {
+    filterProducts()
+  }, [searchQuery, products])
+
+  useEffect(() => {
     if (selectedProduct) {
       const pricePerUnit = parseFloat(selectedProduct.price) || 0
       const total = pricePerUnit * purchaseForm.quantity
@@ -51,11 +58,24 @@ const Products = () => {
   const fetchProducts = () => {
     publicAxios
       .get('/products/')
-      .then((res) => setProducts(res.data))
+      .then((res) => {
+        setProducts(res.data)
+        setFilteredProducts(res.data)
+      })
       .catch((err) => {
         console.error(err)
         toast.error('Failed to load products. Please try again later.')
       })
+  }
+
+  const filterProducts = () => {
+    const query = searchQuery.toLowerCase()
+    const filtered = products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(query) ||
+        product.description.toLowerCase().includes(query)
+    )
+    setFilteredProducts(filtered)
   }
 
   const handlePurchase = (product) => {
@@ -66,7 +86,7 @@ const Products = () => {
       first_installment_amount: 0,
       installment_count: 1,
     })
-    setErrorMessage('') // Reset error message on new purchase
+    setErrorMessage('')
     setPurchaseModal(true)
   }
 
@@ -95,16 +115,14 @@ const Products = () => {
       .catch((error) => {
         console.error(error)
         if (error.response && error.response.status === 400) {
-          // Check for specific error responses from the backend
           const errorDetail =
             error.response.data.installment_count ||
             error.response.data.first_installment_amount ||
             'An error occurred'
 
-          setErrorMessage(errorDetail) // Set the error message in the modal
-          toast.error(errorDetail) // Show error message via toast notification
+          setErrorMessage(errorDetail)
+          toast.error(errorDetail)
         } else {
-          // General error message
           setErrorMessage('Something went wrong while creating the purchase.')
           toast.error('Something went wrong while creating the purchase.')
         }
@@ -157,13 +175,20 @@ const Products = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
+
       <CCard className="mb-4">
-        <CCardHeader className="d-flex justify-content-between align-items-center">
+        <CCardHeader className="d-flex justify-content-between align-items-center flex-wrap gap-2">
           <div>
             <h4 className="mb-0">Product List</h4>
             <div className="small text-body-secondary">Available Products</div>
           </div>
+          <CFormInput
+            type="text"
+            placeholder="Search by name or description"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ maxWidth: '300px' }}
+          />
           {isAdmin && (
             <CButton color="success" onClick={handleAdd}>
               + Add Product
@@ -172,7 +197,7 @@ const Products = () => {
         </CCardHeader>
         <CCardBody>
           <CRow>
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <CCol key={product.id} md={4} className="mb-4">
                 <CCard className="h-100 shadow-sm">
                   <CCardBody>
@@ -248,6 +273,7 @@ const Products = () => {
         <CModalHeader closeButton>
           <strong>Purchase Product</strong>
         </CModalHeader>
+        <p className='d-flex text-muted mt-3 fw-bold justify-content-center'>Selected Product: {selectedProduct?.name} ( ৳{selectedProduct?.price} )</p>
         <CModalBody>
           <CForm>
             <CFormInput

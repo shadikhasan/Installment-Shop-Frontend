@@ -48,7 +48,7 @@ const Login = () => {
       const { is_staff, is_superuser } = profileResponse.data
       localStorage.setItem('is_staff', is_staff)
       localStorage.setItem('is_superuser', is_superuser)
-
+      
       // Success: Redirect to a protected route after successful login
       toast.success('Login successful! Redirecting to dashboard...')
       navigate('/dashboard') // Change '/dashboard' to the desired route
@@ -128,9 +128,6 @@ const Login = () => {
           </CCol>
         </CRow>
       </CContainer>
-
-      {/* Add the ToastContainer here */}
-      <ToastContainer />
     </div>
   )
 }

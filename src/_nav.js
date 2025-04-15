@@ -106,7 +106,7 @@ const getNav = () => {
         },
       ],
     },
-    ...(isLoggedIn ? [
+    ...(isAdmin ? [
       {
         component: CNavItem,
         name: 'Full Admin Access',

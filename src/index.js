@@ -7,9 +7,11 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import App from './App'
 import store from './store'
+import { ToastContainer } from 'react-toastify';
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <App />
+    <ToastContainer position="top-right" autoClose={2000} />
   </Provider>,
 )

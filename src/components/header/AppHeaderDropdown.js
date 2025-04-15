@@ -84,8 +84,8 @@ const AppHeaderDropdown = () => {
         </CDropdownItem>
         <CDropdownDivider />
         <CDropdownItem href="#" onClick={handleLogout}>
-          <CIcon icon={cilAccountLogout} className="me-2" />
-          Logout
+          <CIcon icon={cilAccountLogout} className="me-2 text-danger" />
+          <label className='text-danger'> Logout </label>
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

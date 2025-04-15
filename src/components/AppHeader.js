@@ -136,12 +136,12 @@ const AppHeader = () => {
           ) : (
             <>
               <CNavItem>
-                <CNavLink to="/login" as={NavLink}>
+                <CNavLink to="/login" as={NavLink} className="text-primary fw-bold">
                   Login
                 </CNavLink>
               </CNavItem>
               <CNavItem>
-                <CNavLink to="/register" as={NavLink}>
+                <CNavLink to="/register" as={NavLink} className="text-success fw-bold">
                   Register
                 </CNavLink>
               </CNavItem>

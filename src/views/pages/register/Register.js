@@ -40,7 +40,7 @@ const Register = () => {
         },
       })
       console.log('Registration successful:', response.data)
-      toast.success('Registration successful! Check your email/phone for OTP.') // Display success toast
+      toast.success('Registration successful! Check your email for OTP.') // Display success toast
       navigate('/otp-verify', { state: { email: formData.email } })  // Redirect to OTP verification page
     } catch (error) {
       console.error('Registration failed:', error.response?.data || error.message)
@@ -107,9 +107,6 @@ const Register = () => {
           </CCol>
         </CRow>
       </CContainer>
-
-      {/* ToastContainer placed here for displaying the toasts */}
-      <ToastContainer position="top-center" autoClose={5000} />
     </div>
   )
 }

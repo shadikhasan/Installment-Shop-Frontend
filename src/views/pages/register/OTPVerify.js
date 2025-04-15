@@ -41,7 +41,7 @@ const OtpVerify = () => {
         otp_code: otp,
       })
       console.log('OTP verified:', response.data)
-      toast.success('OTP Verified Successfully!')  // Success notification
+      toast.success('OTP Verified Successfully! Please Login')  // Success notification
       navigate('/login')
     } catch (error) {
       console.error('OTP verification failed:', error.response?.data || error.message)
@@ -84,9 +84,6 @@ const OtpVerify = () => {
           </CCol>
         </CRow>
       </CContainer>
-
-      {/* Add the ToastContainer here */}
-      <ToastContainer />
     </div>
   )
 }
