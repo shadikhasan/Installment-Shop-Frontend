@@ -17,6 +17,8 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -47,10 +49,12 @@ const Login = () => {
       localStorage.setItem('is_staff', is_staff)
       localStorage.setItem('is_superuser', is_superuser)
 
-      // Redirect to a protected route after successful login
+      // Success: Redirect to a protected route after successful login
+      toast.success('Login successful! Redirecting to dashboard...')
       navigate('/dashboard') // Change '/dashboard' to the desired route
     } catch (err) {
       setError('Invalid credentials or error occurred.')
+      toast.error('Invalid credentials or error occurred.') // Error message with Toastify
     }
   }
 
@@ -124,6 +128,9 @@ const Login = () => {
           </CCol>
         </CRow>
       </CContainer>
+
+      {/* Add the ToastContainer here */}
+      <ToastContainer />
     </div>
   )
 }

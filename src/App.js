@@ -55,6 +55,8 @@ const App = () => {
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
           
+          {/* <Route path="/accounts/profile" element={<Profile />} /> */}
+          
           <Route
             path="*"
             name="Home"
@@ -63,7 +65,7 @@ const App = () => {
             }
           />
         </Routes>
-        <ToastContainer position="top-right" autoClose={2000} theme="colored" />
+        <ToastContainer position="top-right" autoClose={2000} />
       </Suspense>
     </HashRouter>
   )

@@ -14,6 +14,8 @@ import {
   CModalBody,
   CModalFooter,
 } from '@coreui/react'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const Products = () => {
   const [products, setProducts] = useState([])
@@ -21,7 +23,16 @@ const Products = () => {
   const [editProduct, setEditProduct] = useState(null)
   const [formData, setFormData] = useState({ name: '', description: '', price: '' })
 
-  // Get user roles from localStorage
+  const [purchaseModal, setPurchaseModal] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [purchaseForm, setPurchaseForm] = useState({
+    quantity: 1,
+    first_installment_amount: 0,
+    installment_count: 1,
+  })
+  const [errorMessage, setErrorMessage] = useState('')
+  const [totalPrice, setTotalPrice] = useState(0)
+
   const isAdmin = localStorage.getItem('is_superuser') === 'true'
   const isLoggedIn = !!localStorage.getItem('access_token')
 
@@ -29,21 +40,74 @@ const Products = () => {
     fetchProducts()
   }, [])
 
+  useEffect(() => {
+    if (selectedProduct) {
+      const pricePerUnit = parseFloat(selectedProduct.price) || 0
+      const total = pricePerUnit * purchaseForm.quantity
+      setTotalPrice(total)
+    }
+  }, [purchaseForm.quantity, selectedProduct])
+
   const fetchProducts = () => {
     publicAxios
       .get('/products/')
       .then((res) => setProducts(res.data))
-      .catch((err) => console.error(err))
-  }
-
-  const handlePurchase = (productId) => {
-    if (!isLoggedIn) return alert('Please log in to purchase.')
-    authAxios
-      .post('/purchases/', { product: productId, quantity: 1 })
-      .then(() => alert('Purchase successful!'))
       .catch((err) => {
         console.error(err)
-        alert('Purchase failed.')
+        toast.error('Failed to load products. Please try again later.')
+      })
+  }
+
+  const handlePurchase = (product) => {
+    if (!isLoggedIn) return toast.info('Please log in to purchase.')
+    setSelectedProduct(product)
+    setPurchaseForm({
+      quantity: 1,
+      first_installment_amount: 0,
+      installment_count: 1,
+    })
+    setErrorMessage('') // Reset error message on new purchase
+    setPurchaseModal(true)
+  }
+
+  const submitPurchase = () => {
+    if (!selectedProduct) return
+
+    const now = new Date()
+    const date = now.toISOString().split('T')[0]
+    const time = now.toTimeString().split(' ')[0]
+
+    const payload = {
+      product: selectedProduct.id,
+      quantity: purchaseForm.quantity,
+      purchase_date: date,
+      purchase_time: time,
+      first_installment_amount: purchaseForm.first_installment_amount,
+      installment_count: purchaseForm.installment_count,
+    }
+
+    authAxios
+      .post('/purchases/create/', payload)
+      .then(() => {
+        toast.success('Purchase successful!')
+        setPurchaseModal(false)
+      })
+      .catch((error) => {
+        console.error(error)
+        if (error.response && error.response.status === 400) {
+          // Check for specific error responses from the backend
+          const errorDetail =
+            error.response.data.installment_count ||
+            error.response.data.first_installment_amount ||
+            'An error occurred'
+
+          setErrorMessage(errorDetail) // Set the error message in the modal
+          toast.error(errorDetail) // Show error message via toast notification
+        } else {
+          // General error message
+          setErrorMessage('Something went wrong while creating the purchase.')
+          toast.error('Something went wrong while creating the purchase.')
+        }
       })
   }
 
@@ -52,12 +116,12 @@ const Products = () => {
       authAxios
         .delete(`/products/${id}/`)
         .then(() => {
-          alert('Product deleted!')
+          toast.success('Product deleted!')
           fetchProducts()
         })
         .catch((err) => {
           console.error(err)
-          alert('Deletion failed.')
+          toast.error('Deletion failed. Please try again.')
         })
     }
   }
@@ -83,16 +147,17 @@ const Products = () => {
       .then(() => {
         setShowModal(false)
         fetchProducts()
-        alert(editProduct ? 'Product updated!' : 'Product added!')
+        toast.success(editProduct ? 'Product updated!' : 'Product added!')
       })
       .catch((err) => {
         console.error(err)
-        alert('Error saving product.')
+        toast.error('Error saving product. Please try again.')
       })
   }
 
   return (
     <>
+      <ToastContainer position="top-right" autoClose={3000} />
       <CCard className="mb-4">
         <CCardHeader className="d-flex justify-content-between align-items-center">
           <div>
@@ -115,7 +180,7 @@ const Products = () => {
                     <p>{product.description}</p>
                     <p><strong>Price:</strong> ৳{product.price}</p>
                     {isLoggedIn && (
-                      <CButton color="primary" onClick={() => handlePurchase(product.id)}>
+                      <CButton color="primary" onClick={() => handlePurchase(product)}>
                         Purchase
                       </CButton>
                     )}
@@ -176,6 +241,67 @@ const Products = () => {
             </CModalFooter>
           </CForm>
         </CModalBody>
+      </CModal>
+
+      {/* Modal for Purchase */}
+      <CModal visible={purchaseModal} onClose={() => setPurchaseModal(false)}>
+        <CModalHeader closeButton>
+          <strong>Purchase Product</strong>
+        </CModalHeader>
+        <CModalBody>
+          <CForm>
+            <CFormInput
+              label="Quantity"
+              type="number"
+              min={1}
+              value={purchaseForm.quantity}
+              onChange={(e) =>
+                setPurchaseForm({ ...purchaseForm, quantity: parseInt(e.target.value) || 1 })
+              }
+              className="mb-3"
+            />
+            <CFormInput
+              label="First Installment Amount"
+              type="number"
+              min={0}
+              value={purchaseForm.first_installment_amount}
+              onChange={(e) =>
+                setPurchaseForm({
+                  ...purchaseForm,
+                  first_installment_amount: parseFloat(e.target.value) || 0,
+                })
+              }
+              className="mb-3"
+            />
+            <CFormInput
+              label="Installment Count"
+              type="number"
+              min={1}
+              value={purchaseForm.installment_count}
+              onChange={(e) =>
+                setPurchaseForm({
+                  ...purchaseForm,
+                  installment_count: parseInt(e.target.value) || 1,
+                })
+              }
+              className="mb-3"
+            />
+            <div><strong>Total Price:</strong> ৳{totalPrice}</div>
+            {errorMessage && (
+              <div className="text-danger mt-2">
+                <strong>{errorMessage}</strong>
+              </div>
+            )}
+          </CForm>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setPurchaseModal(false)}>
+            Cancel
+          </CButton>
+          <CButton color="primary" onClick={submitPurchase}>
+            Confirm Purchase
+          </CButton>
+        </CModalFooter>
       </CModal>
     </>
   )

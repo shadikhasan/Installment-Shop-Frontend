@@ -54,7 +54,7 @@ const getNav = () => {
       {
         component: CNavItem,
         name: 'Purchases',
-        to: '#',
+        to: '/purchase',
         icon: <CIcon icon={cibProductHunt} customClassName="nav-icon" />,
       },
       {

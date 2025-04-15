@@ -15,9 +15,12 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css' // Ensure this is imported
+import { publicAxios } from '../../../axiosConfig'
 
 const Register = () => {
-  const navigate = useNavigate()  // ✅ Moved inside the component
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -31,17 +34,17 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post('http://127.0.0.1:8000/accounts/register/', formData, {
+      const response = await publicAxios.post('/accounts/register/', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
       console.log('Registration successful:', response.data)
-      alert('Check your email/phone for OTP!')
-      navigate('/otp-verify', { state: { email: formData.email } })  // ✅ Redirect after success
+      toast.success('Registration successful! Check your email/phone for OTP.') // Display success toast
+      navigate('/otp-verify', { state: { email: formData.email } })  // Redirect to OTP verification page
     } catch (error) {
       console.error('Registration failed:', error.response?.data || error.message)
-      alert('Error: ' + JSON.stringify(error.response?.data || error.message))
+      toast.error('Registration failed: ' + (error.response?.data || error.message)) // Display error toast
     }
   }
 
@@ -104,6 +107,9 @@ const Register = () => {
           </CCol>
         </CRow>
       </CContainer>
+
+      {/* ToastContainer placed here for displaying the toasts */}
+      <ToastContainer position="top-center" autoClose={5000} />
     </div>
   )
 }

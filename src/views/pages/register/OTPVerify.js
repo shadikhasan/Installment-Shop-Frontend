@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { authAxios, publicAxios } from '../../../axiosConfig'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   CButton,
@@ -15,6 +16,8 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilShieldAlt } from '@coreui/icons'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const OtpVerify = () => {
   const location = useLocation()
@@ -33,16 +36,16 @@ const OtpVerify = () => {
   const handleVerify = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post('http://127.0.0.1:8000/accounts/verify-otp/', {
+      const response = await publicAxios.post('/accounts/verify-otp/', {
         email: email,
         otp_code: otp,
       })
       console.log('OTP verified:', response.data)
-      alert('OTP Verified Successfully!')
+      toast.success('OTP Verified Successfully!')  // Success notification
       navigate('/login')
     } catch (error) {
       console.error('OTP verification failed:', error.response?.data || error.message)
-      alert('OTP verification failed: ' + JSON.stringify(error.response?.data))
+      toast.error('OTP verification failed: ' + (error.response?.data || error.message))  // Error notification
     }
   }
 
@@ -81,6 +84,9 @@ const OtpVerify = () => {
           </CCol>
         </CRow>
       </CContainer>
+
+      {/* Add the ToastContainer here */}
+      <ToastContainer />
     </div>
   )
 }
