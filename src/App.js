@@ -5,6 +5,7 @@ import OTPVerify from './views/pages/register/OTPVerify'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import PrivateRoute from './components/PrivateRoute'
+import ProductList from './components/ProductList'
 
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
@@ -54,6 +55,11 @@ const App = () => {
           <Route path="/otp-verify" element={<OTPVerify />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
+          
+          <Route exact path="/products" name="Products Lists" element={
+            <ProductList  />
+            } />
+          
           <Route
             path="*"
             name="Home"
