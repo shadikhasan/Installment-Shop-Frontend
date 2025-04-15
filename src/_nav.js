@@ -48,7 +48,7 @@ const getNav = () => {
       {
         component: CNavItem,
         name: 'Installments',
-        to: '#',
+        to: '/installments',
         icon: <CIcon icon={cibProductHunt} customClassName="nav-icon" />,
       },
       {

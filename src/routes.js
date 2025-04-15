@@ -4,6 +4,7 @@ import AdminRoute from './components/AdminRoute'
 const Products = React.lazy(() => import('./views/products/Products'))
 const Profile = React.lazy(() => import('./views/profile/Profile'))
 const AddPurchaseForm = React.lazy(() => import('./views/purchase/AddPurchaseForm'))
+const Installments = React.lazy(() => import('./views/installments/InstallmentsPage'))
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -66,6 +67,7 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/products', name: 'Products', element: Products },
   { path: '/profile', name: 'Profile', element: Profile },
+  { path: '/installments', name: 'Installments', element: Installments },
   { path: '/purchase', name: 'AddPurchaseForm', element: AddPurchaseForm },
   {
     path: '/dashboard',
