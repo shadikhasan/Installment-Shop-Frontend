@@ -39,19 +39,16 @@ const PayInstallment = ({ installmentId }) => {
   };
 
   return (
-    <Container className="mt-5">
+    <Container className="m-4">
       <Row className="justify-content-center">
         {/* Increase column size for wider view */}
-        <Col md={8} lg={6} xl={5}>
+        <Col>
           <Card className="shadow-lg rounded-4">
-            <Card.Header className="bg-success text-white d-flex align-items-center">
-              <FaCreditCard className="me-2" />
-              <h5 className="mb-0">Pay Installment</h5>
-            </Card.Header>
+            
             <Card.Body>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="amount">
-                  <Form.Label>Amount (৳)</Form.Label>
+                  <Form.Label>Amount (৳) </Form.Label>
                   <Form.Control
                     type="number"
                     placeholder="Enter payment amount"

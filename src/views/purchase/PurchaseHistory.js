@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { authAxios } from '../../axiosConfig'
+import React, { useEffect, useState } from 'react';
+import { authAxios } from '../../axiosConfig';
 import {
   CCard,
   CCardBody,
@@ -12,20 +12,21 @@ import {
   CTableHeaderCell,
   CTableRow,
   CTableDataCell,
-  CSpinner
-} from '@coreui/react'
+  CSpinner,
+  CBadge
+} from '@coreui/react';
 
 const PurchaseHistory = () => {
-  const [purchases, setPurchases] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [purchases, setPurchases] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     authAxios
       .get('/purchases/my/')
       .then((res) => setPurchases(res.data))
       .catch((err) => console.error('Failed to fetch purchases:', err))
-      .finally(() => setLoading(false))
-  }, [])
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <CCard className="mb-4">
@@ -51,6 +52,7 @@ const PurchaseHistory = () => {
                 <CTableHeaderCell>First Installment</CTableHeaderCell>
                 <CTableHeaderCell>Installments</CTableHeaderCell>
                 <CTableHeaderCell>Purchase Date</CTableHeaderCell>
+                <CTableHeaderCell>Status</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
@@ -64,6 +66,11 @@ const PurchaseHistory = () => {
                   <CTableDataCell>৳{item.first_installment_amount}</CTableDataCell>
                   <CTableDataCell>{item.installment_count}</CTableDataCell>
                   <CTableDataCell>{new Date(item.purchase_date).toLocaleString()}</CTableDataCell>
+                  <CTableDataCell>
+                    <CBadge color={item.status === 'paid' ? 'success' : 'danger'}>
+                      {item.status === 'paid' ? 'Paid' : 'Due'}
+                    </CBadge>
+                  </CTableDataCell>
                 </CTableRow>
               ))}
             </CTableBody>
@@ -71,7 +78,7 @@ const PurchaseHistory = () => {
         )}
       </CCardBody>
     </CCard>
-  )
-}
+  );
+};
 
-export default PurchaseHistory
+export default PurchaseHistory;

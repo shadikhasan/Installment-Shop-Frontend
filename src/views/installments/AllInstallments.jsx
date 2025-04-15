@@ -20,6 +20,12 @@ const AllInstallments = () => {
       });
   }, []);
 
+  // Function to format date to a readable string (e.g., "April 15, 2025")
+  const formatDate = (date) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(date).toLocaleDateString('en-US', options);
+  };
+
   return (
     <Container className="mt-5">
       <Row className="mb-4">
@@ -47,6 +53,7 @@ const AllInstallments = () => {
               <th>Due Amount</th>
               <th>Due Date</th>
               <th>Status</th>
+              <th>Payment Date</th>
             </tr>
           </thead>
           <tbody>
@@ -56,7 +63,7 @@ const AllInstallments = () => {
                 <td>{installment.installment_number + 1}</td>
                 <td>{installment.paid_amount}</td>
                 <td>{installment.due_amount}</td>
-                <td>{installment.due_date}</td>
+                <td>{formatDate(installment.due_date)}</td> {/* Formatting due date */}
                 <td>
                   <span
                     className={`badge ${
@@ -70,6 +77,7 @@ const AllInstallments = () => {
                     {installment.status}
                   </span>
                 </td>
+                <td>{installment.payment_date ? formatDate(installment.payment_date) : 'N/A'}</td> {/* Formatting payment date */}
               </tr>
             ))}
           </tbody>

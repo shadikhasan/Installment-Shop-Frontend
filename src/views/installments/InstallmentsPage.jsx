@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AllInstallments from './AllInstallments';
 import PayInstallment from './PayInstallment';
 import { authAxios } from '../../axiosConfig';
+import { FaCreditCard } from 'react-icons/fa';
 
 import {
   Container,
@@ -95,9 +96,9 @@ const InstallmentsPage = () => {
 
 
       {/* Modal for PayInstallment */}
-      <Modal show={showModal} onHide={handleCloseModal} centered size="lg">
+      <Modal show={showModal} onHide={handleCloseModal} centered size="md">
         <Modal.Header closeButton className="bg-success text-white">
-          <Modal.Title>Pay Installment</Modal.Title>
+          <Modal.Title>Pay Installment <FaCreditCard/></Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex justify-content-center">

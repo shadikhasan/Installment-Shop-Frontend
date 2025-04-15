@@ -1,36 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { authAxios } from '../../axiosConfig';
-import {
-  Spinner,
-  Alert,
-  Table,
-  Container,
-  Row,
-  Col,
-  Card
-} from 'react-bootstrap';
-import { FaClock } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react'
+import { authAxios } from '../../axiosConfig'
+import { Spinner, Alert, Table, Container, Row, Col, Card } from 'react-bootstrap'
+import { FaClock } from 'react-icons/fa'
 
 const NextDueInstallment = () => {
-  const [nextInstallment, setNextInstallment] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [nextInstallment, setNextInstallment] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     authAxios
       .get('/installments/next-due/')
       .then((response) => {
-        setNextInstallment(response.data);
-        setLoading(false);
+        setNextInstallment(response.data)
+        setLoading(false)
       })
       .catch(() => {
-        setError('Failed to load next due installment.');
-        setLoading(false);
-      });
-  }, []);
+        setError('Failed to load next due installment.')
+        setLoading(false)
+      })
+  }, [])
 
-  const formatCurrency = (amount) => `৳${parseFloat(amount).toFixed(2)}`;
-  const formatDate = (dateStr) => new Date(dateStr).toLocaleDateString();
+  const formatCurrency = (amount) => `৳${parseFloat(amount).toFixed(2)}`
+
+  // Function to format date to a readable string (e.g., "April 15, 2025")
+  const formatDate = (date) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' }
+    return new Date(date).toLocaleDateString('en-US', options)
+  }
 
   return (
     <Container className="mt-5">
@@ -68,7 +65,7 @@ const NextDueInstallment = () => {
                       <td>{nextInstallment.product_name}</td>
                       <td>{nextInstallment.installment_number + 1}</td>
                       <td>{formatCurrency(nextInstallment.due_amount)}</td>
-                      <td>{formatDate(nextInstallment.due_date)}</td>
+                      <td>{formatDate(nextInstallment.due_date)}</td> {/* Formatted date */}
                     </tr>
                   </tbody>
                 </Table>
@@ -78,7 +75,7 @@ const NextDueInstallment = () => {
         </Col>
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default NextDueInstallment;
+export default NextDueInstallment
