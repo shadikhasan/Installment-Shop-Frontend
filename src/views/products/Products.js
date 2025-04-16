@@ -39,6 +39,9 @@ const Products = () => {
   const isAdmin = localStorage.getItem('is_superuser') === 'true'
   const isLoggedIn = !!localStorage.getItem('access_token')
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 6 // Number of products per page
+
   useEffect(() => {
     fetchProducts()
   }, [])
@@ -76,6 +79,7 @@ const Products = () => {
         product.description.toLowerCase().includes(query),
     )
     setFilteredProducts(filtered)
+    setCurrentPage(1) // Reset to the first page when search query changes
   }
 
   const handlePurchase = (product) => {
@@ -173,6 +177,16 @@ const Products = () => {
       })
   }
 
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
+  const currentProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber)
+  }
+
   return (
     <>
       <CCard className="mb-4">
@@ -196,7 +210,7 @@ const Products = () => {
         </CCardHeader>
         <CCardBody>
           <CRow>
-            {filteredProducts.map((product) => (
+            {currentProducts.map((product) => (
               <CCol key={product.id} md={4} className="mb-4">
                 <CCard className="h-100 shadow-sm">
                   <CCardBody>
@@ -225,6 +239,34 @@ const Products = () => {
               </CCol>
             ))}
           </CRow>
+
+          {/* Pagination Controls */}
+          <div className="d-flex justify-content-center mt-4">
+            <CButton
+              color="secondary"
+              onClick={() => setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </CButton>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <CButton
+                key={index + 1}
+                color={currentPage === index + 1 ? 'primary' : 'secondary'}
+                onClick={() => handlePageChange(index + 1)}
+                className="mx-1"
+              >
+                {index + 1}
+              </CButton>
+            ))}
+            <CButton
+              color="secondary"
+              onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </CButton>
+          </div>
         </CCardBody>
       </CCard>
 

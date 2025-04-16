@@ -12,14 +12,21 @@ const NextDueInstallment = () => {
     authAxios
       .get('/installments/next-due/')
       .then((response) => {
-        setNextInstallment(response.data)
+        // Check if response contains "No due installments found."
+        if (response.data && response.data.detail === "No due installments found.") {
+          setError('No due installments found.')
+        } else {
+          setNextInstallment(response.data)
+        }
         setLoading(false)
       })
       .catch(() => {
-        setError('Failed to load next due installment.')
+        // Handle any network or unexpected errors here
+        setError('Failed to load next due installment')
         setLoading(false)
       })
   }, [])
+  
 
   const formatCurrency = (amount) => `৳${parseFloat(amount).toFixed(2)}`
 
