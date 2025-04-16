@@ -16,6 +16,7 @@ import {
 } from '@coreui/react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import WeeklyMonthlyReport from '../../components/WeeklyMonthlyReport'
 
 const Products = () => {
   const [products, setProducts] = useState([])
@@ -175,7 +176,6 @@ const Products = () => {
 
   return (
     <>
-
       <CCard className="mb-4">
         <CCardHeader className="d-flex justify-content-between align-items-center flex-wrap gap-2">
           <div>

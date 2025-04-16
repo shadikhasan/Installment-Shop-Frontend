@@ -45,12 +45,19 @@ import {
 
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import MainChart from './MainChart'
+import UserStatsChart from '../../components/UserStatsChart'
+import UserSummary from './../../components/UserSummary';
+import GlobalSummary from '../../components/GlobalSummary'
+import WeeklyMonthlyReport from '../../components/WeeklyMonthlyReport'
 
 const Dashboard = () => {
 
   return (
     <>
-      <WidgetsDropdown className="mb-4" />
+    <WeeklyMonthlyReport/>
+    <UserSummary/>
+      {/* <WidgetsDropdown className="mb-4" /> */}
+      <UserStatsChart/>
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
