@@ -18,7 +18,7 @@ const getNav = () => {
   const isAdmin = localStorage.getItem('is_superuser') === 'true'
 
   return [
-    ...(isAdmin ? [
+    ...(isLoggedIn ? [
       {
         component: CNavItem,
         name: 'Dashboard',
@@ -26,7 +26,7 @@ const getNav = () => {
         icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
         badge: {
           color: 'info',
-          text: 'ADMIN',
+          text: 'New',
         },
       },
     ] : []),

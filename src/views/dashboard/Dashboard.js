@@ -48,39 +48,25 @@ import MainChart from './MainChart'
 import UserStatsChart from '../../components/UserStatsChart'
 import UserSummary from './../../components/UserSummary'
 import GlobalSummary from '../../components/GlobalSummary'
-
+import PaymentHistoryTitle from './PaymentHistoryTitle'
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
+  const isAdmin = localStorage.getItem('is_superuser') === 'true'
   return (
     <>
-      <UserSummary />
-      {/* <WidgetsDropdown className="mb-4" /> */}
-      <UserStatsChart />
-      <CCard className="mb-4">
+      {isAdmin && <GlobalSummary />}
+      {!isAdmin && <UserSummary />}
+      {isAdmin && <UserStatsChart />}
+      <CCard className="mb-4 mt-4">
         <CCardBody>
           <CRow>
-            <CCol sm={5}>
-              <h4 id="traffic" className="card-title mb-0">
-                Traffic
-              </h4>
-              <div className="small text-body-secondary">January - July 2023</div>
-            </CCol>
+            <PaymentHistoryTitle/> 
             <CCol sm={7} className="d-none d-md-block">
               <CButton color="primary" className="float-end">
                 <CIcon icon={cilCloudDownload} />
               </CButton>
-              <CButtonGroup className="float-end me-3">
-                {['Day', 'Month', 'Year'].map((value) => (
-                  <CButton
-                    color="outline-secondary"
-                    key={value}
-                    className="mx-0"
-                    active={value === 'Month'}
-                  >
-                    {value}
-                  </CButton>
-                ))}
-              </CButtonGroup>
+      
             </CCol>
           </CRow>
           <MainChart />
