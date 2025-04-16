@@ -4,11 +4,13 @@ import {
   cibOpenAccess,
   cibProductHunt,
   cilBell,
+  cilBellExclamation,
   cilChartPie,
   cilSpeedometer,
   cilStar,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import { FaConciergeBell } from 'react-icons/fa'
 
 // This function returns the navigation based on login status
 const getNav = () => {
@@ -34,12 +36,6 @@ const getNav = () => {
     },
     {
       component: CNavItem,
-      name: 'Charts',
-      to: '/charts',
-      icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
-    },
-    {
-      component: CNavItem,
       name: 'Products',
       to: '/products',
       icon: <CIcon icon={cibProductHunt} customClassName="nav-icon" />,
@@ -57,55 +53,19 @@ const getNav = () => {
         to: '/purchase',
         icon: <CIcon icon={cibProductHunt} customClassName="nav-icon" />,
       },
-      {
-        component: CNavGroup,
-        name: 'Notifications',
-        icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
-        items: [
-          {
-            component: CNavItem,
-            name: 'Alerts',
-            to: '/notifications/alerts',
-          },
-          {
-            component: CNavItem,
-            name: 'Badges',
-            to: '/notifications/badges',
-          },
-          {
-            component: CNavItem,
-            name: 'Modal',
-            to: '/notifications/modals',
-          },
-          {
-            component: CNavItem,
-            name: 'Toasts',
-            to: '/notifications/toasts',
-          },
-        ],
-      },
     ] : []),
     {
       component: CNavTitle,
       name: 'Extras',
     },
-    {
-      component: CNavGroup,
-      name: 'Pages',
-      icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-      items: [
-        {
-          component: CNavItem,
-          name: 'Error 404',
-          to: '/404',
-        },
-        {
-          component: CNavItem,
-          name: 'Error 500',
-          to: '/500',
-        },
-      ],
-    },
+    ...(isAdmin ? [
+      {
+        component: CNavItem,
+        name: 'Reports',
+        to: '/reports',
+        icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
+      },
+    ] : []),
     ...(isAdmin ? [
       {
         component: CNavItem,

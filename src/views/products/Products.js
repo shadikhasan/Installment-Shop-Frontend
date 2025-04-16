@@ -16,7 +16,6 @@ import {
 } from '@coreui/react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import WeeklyMonthlyReport from '../../components/WeeklyMonthlyReport'
 
 const Products = () => {
   const [products, setProducts] = useState([])
@@ -74,7 +73,7 @@ const Products = () => {
     const filtered = products.filter(
       (product) =>
         product.name.toLowerCase().includes(query) ||
-        product.description.toLowerCase().includes(query)
+        product.description.toLowerCase().includes(query),
     )
     setFilteredProducts(filtered)
   }
@@ -203,7 +202,9 @@ const Products = () => {
                   <CCardBody>
                     <h5>{product.name}</h5>
                     <p>{product.description}</p>
-                    <p><strong>Price:</strong> ৳{product.price}</p>
+                    <p>
+                      <strong>Price:</strong> ৳{product.price}
+                    </p>
                     {isLoggedIn && (
                       <CButton color="primary" onClick={() => handlePurchase(product)}>
                         Purchase
@@ -273,7 +274,9 @@ const Products = () => {
         <CModalHeader closeButton>
           <strong>Purchase Product</strong>
         </CModalHeader>
-        <p className='d-flex text-muted mt-3 fw-bold justify-content-center'>Selected Product: {selectedProduct?.name} ( ৳{selectedProduct?.price} )</p>
+        <p className="d-flex text-muted mt-3 fw-bold justify-content-center">
+          Selected Product: {selectedProduct?.name} ( ৳{selectedProduct?.price} )
+        </p>
         <CModalBody>
           <CForm>
             <CFormInput
@@ -312,7 +315,9 @@ const Products = () => {
               }
               className="mb-3"
             />
-            <div><strong>Total Price:</strong> ৳{totalPrice}</div>
+            <div>
+              <strong>Total Price:</strong> ৳{totalPrice}
+            </div>
             {errorMessage && (
               <div className="text-danger mt-2">
                 <strong>{errorMessage}</strong>

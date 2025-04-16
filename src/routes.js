@@ -5,6 +5,7 @@ const Products = React.lazy(() => import('./views/products/Products'))
 const Profile = React.lazy(() => import('./views/profile/Profile'))
 const AddPurchaseForm = React.lazy(() => import('./views/purchase/AddPurchaseForm'))
 const Installments = React.lazy(() => import('./views/installments/InstallmentsPage'))
+const Reports = React.lazy(() => import('./views/reports/Reports'))
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -69,6 +70,7 @@ const routes = [
   { path: '/profile', name: 'Profile', element: Profile },
   { path: '/installments', name: 'Installments', element: Installments },
   { path: '/purchase', name: 'AddPurchaseForm', element: AddPurchaseForm },
+  { path: '/reports', name: 'Reports', element: Reports },
   {
     path: '/dashboard',
     name: 'Dashboard',
