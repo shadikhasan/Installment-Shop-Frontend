@@ -1,185 +1,121 @@
-# CoreUI Free React Admin Template [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=CoreUI%20-%20Free%React%204%20Admin%20Template%20&url=https://coreui.io&hashtags=bootstrap,admin,template,dashboard,panel,free,angular,react,vue)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![@coreui coreui](https://img.shields.io/badge/@coreui%20-coreui-lightgrey.svg?style=flat-square)](https://github.com/coreui/coreui)
-[![npm package][npm-coreui-badge]][npm-coreui]
-[![NPM downloads][npm-coreui-download]][npm-coreui]
-[![@coreui react](https://img.shields.io/badge/@coreui%20-react-lightgrey.svg?style=flat-square)](https://github.com/coreui/react)
-[![npm package][npm-coreui-react-badge]][npm-coreui-react]
-[![NPM downloads][npm-coreui-react-download]][npm-coreui-react]  
+# Installment Shop Frontend
 
-[npm-coreui]: https://www.npmjs.com/package/@coreui/coreui
-[npm-coreui-badge]: https://img.shields.io/npm/v/@coreui/coreui.png?style=flat-square
-[npm-coreui-download]: https://img.shields.io/npm/dm/@coreui/coreui.svg?style=flat-square
-[npm-coreui-react]: https://www.npmjs.com/package/@coreui/react
-[npm-coreui-react-badge]: https://img.shields.io/npm/v/@coreui/react.png?style=flat-square
-[npm-coreui-react-download]: https://img.shields.io/npm/dm/@coreui/react.svg?style=flat-square
-[npm]: https://www.npmjs.com/package/@coreui/react
+## Description
 
-[![Bootstrap Admin Template](https://assets.coreui.io/products/coreui-free-bootstrap-admin-template-light-dark.webp)](https://coreui.io/product/free-react-admin-template/)
+Installment Shop is a comprehensive and user-friendly platform that allows users to shop for products on installments. With a modern, intuitive interface, it enables customers to browse products, track their orders, and manage installment payments effectively.
 
-CoreUI is meant to be the UX game changer. Pure & transparent code is devoid of redundant components, so the app is light enough to offer ultimate user experience. This means mobile devices also, where the navigation is just as easy and intuitive as on a desktop or laptop. The CoreUI Layout API lets you customize your project for almost any device – be it Mobile, Web or WebApp – CoreUI covers them all!
+This is the **Frontend** of the Installment Shop, developed using React.js. It interfaces with the backend API to provide a smooth user experience, displaying product catalogs, customer profiles, and payment history.
 
-## Table of Contents
+---
 
-* [Versions](#versions)
-* [CoreUI PRO](#coreui-pro)
-* [CoreUI PRO React Admin Templates](#coreui-pro-react-admin-templates)
-* [Quick Start](#quick-start)
-* [Installation](#installation)
-* [Basic usage](#basic-usage)
-* [What's included](#whats-included)
-* [Documentation](#documentation)
-* [Versioning](#versioning)
-* [Creators](#creators)
-* [Community](#community)
-* [Support CoreUI Development](#support-coreui-development)
-* [Copyright and License](#copyright-and-license)
+## Features
 
-## Versions
+- **User Registration & Login**: Create an account and securely log in.
+- **Product Browsing**: Browse a wide range of products available for installment purchases.
+- **Installment Management**: View and manage installment payments.
+- **Real-Time Payment Tracking**: Track your installment payments and due amounts.
+- **Responsive Design**: Fully responsive for mobile, tablet, and desktop views.
 
-* [CoreUI Free Bootstrap Admin Template](https://github.com/coreui/coreui-free-bootstrap-admin-template)
-* [CoreUI Free Angular Admin Template](https://github.com/coreui/coreui-free-angular-admin-template)
-* [CoreUI Free React.js Admin Template (Vite)](https://github.com/coreui/coreui-free-react-admin-template)
-* [CoreUI Free React.js Admin Template (Create React App)](https://github.com/coreui/coreui-free-react-admin-template-cra)
-* [CoreUI Free Vue.js Admin Template](https://github.com/coreui/coreui-free-vue-admin-template)
+---
 
-## CoreUI PRO
+## Technologies Used
 
-* 💪  [CoreUI PRO Angular Admin Template](https://coreui.io/product/angular-dashboard-template/)
-* 💪  [CoreUI PRO Bootstrap Admin Template](https://coreui.io/product/bootstrap-dashboard-template/)
-* 💪  [CoreUI PRO Next.js Admin Template](https://coreui.io/product/next-js-dashboard-template/)
-* 💪  [CoreUI PRO React Admin Template](https://coreui.io/product/react-dashboard-template/)
-* 💪  [CoreUI PRO Vue Admin Template](https://coreui.io/product/vue-dashboard-template/)
+- **React.js**: For building the UI and handling state management.
+- **Redux**: For global state management across the app.
+- **Axios**: To make HTTP requests to the backend API.
+- **React-Router**: For client-side routing.
+- **CoreUI**: A UI library for building the admin dashboard and other components.
+- **Chart.js**: For displaying graphical data representations.
 
-## CoreUI PRO React Admin Templates
+---
 
-| Default Theme | Light Theme |
-| --- | --- |
-| [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_default_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=default) | [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_light_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=light)|
+## Installation
 
-| Modern Theme | Bright Theme |
-| --- | --- |
-| [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_default_v3_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=modern) | [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_light_v3_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=bright)|
+1. **Clone the repository**:
 
-## Quick Start
+   ```bash
+   git clone https://github.com/shadikhasan/Installment-Shop-Frontend.git
+   ```
 
-- [Download the latest release](https://github.com/coreui/coreui-free-react-admin-template/archive/refs/heads/main.zip)
-- Clone the repo: `git clone https://github.com/coreui/coreui-free-react-admin-template.git`
+2. **Navigate into the project directory**:
 
-### Installation
+   ```bash
+   cd Installment-Shop-Frontend
+   ```
 
-``` bash
-$ npm install
-```
+3. **Install the dependencies**:
 
-or
+   ```bash
+   npm install
+   ```
 
-``` bash
-$ yarn install
-```
+4. **Start the development server**:
 
-### Basic usage
+   ```bash
+   npm start
+   ```
 
-``` bash
-# dev server with hot reload at http://localhost:3000
-$ npm start 
-```
+   This will start the React app on [http://localhost:3000](http://localhost:3000).
 
-or 
+---
 
-``` bash
-# dev server with hot reload at http://localhost:3000
-$ yarn start
-```
+## API Integration
 
-Navigate to [http://localhost:3000](http://localhost:3000). The app will automatically reload if you change any of the source files.
+This frontend application interacts with the following API endpoints:
 
-#### Build
+- **/api/products**: To fetch the list of products.
+- **/api/users**: For user registration, login, and profile management.
+- **/api/installments**: For managing installment payments.
 
-Run `build` to build the project. The build artifacts will be stored in the `build/` directory.
+Make sure the backend is running and accessible at the correct endpoint.
 
-```bash
-# build for production with minification
-$ npm run build
-```
+---
 
-or
-
-```bash
-# build for production with minification
-$ yarn build
-```
-
-## What's included
-
-Within the download you'll find the following directories and files, logically grouping common assets and providing both compiled and minified variations. You'll see something like this:
+## Folder Structure
 
 ```
-coreui-free-react-admin-template
-├── public/          # static files
-│   ├── favicon.ico
-│   └── manifest.json
-│
-├── src/             # project root
-│   ├── assets/      # images, icons, etc.
-│   ├── components/  # common components - header, footer, sidebar, etc.
-│   ├── layouts/     # layout containers
-│   ├── scss/        # scss styles
-│   ├── views/       # application views
-│   ├── _nav.js      # sidebar navigation config
-│   ├── App.js
-│   ├── index.js
-│   ├── routes.js    # routes config
-│   └── store.js     # template state example 
-│
-├── index.html       # html template
-├── ...
-├── package.json
-├── ...
-└── vite.config.mjs  # vite config
+/src
+  /assets                # Images, icons, and other assets
+  /components            # Reusable UI components
+  /pages                 # Page-level components (e.g., ProductPage, LoginPage)
+  /redux                 # Redux state management (actions, reducers)
+  /utils                 # Utility functions and helper methods
+  /styles                # Global styles and theming
+  /hooks                 # Custom React hooks
+  /api                   # API service calls (Axios setup)
 ```
 
-## Documentation
+---
 
-The documentation for the CoreUI Admin Template is hosted at our website [CoreUI for React](https://coreui.io/react/docs/templates/installation/)
+## Contribution Guidelines
 
-## Versioning
+1. **Fork the repository**: If you want to contribute, fork the repo to your GitHub account.
+2. **Create a new branch**: Create a branch from the `main` branch for your changes.
+3. **Make your changes**: Implement your feature or fix the issue.
+4. **Commit your changes**: Make meaningful commit messages.
+5. **Submit a pull request**: Open a pull request with a detailed explanation of your changes.
 
-For transparency into our release cycle and in striving to maintain backward compatibility, CoreUI Free Admin Template is maintained under [the Semantic Versioning guidelines](http://semver.org/).
+---
 
-See [the Releases section of our project](https://github.com/coreui/coreui-free-react-admin-template/releases) for changelogs for each release version.
+## License
 
-## Creators
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-**Łukasz Holeczek**
+---
 
-* <https://twitter.com/lukaszholeczek>
-* <https://github.com/mrholek>
+## Acknowledgements
 
-**Andrzej Kopański**
+- **CoreUI**: A great React UI component library used in this project.
+- **Chart.js**: Used to display statistical charts in the dashboard.
+- **React**: The core library that powers this project.
+- **Redux**: For state management across the application.
 
-* <https://github.com/xidedix>
+---
 
-**CoreUI Team**
+## Contact
 
-* <https://twitter.com/core_ui>
-* <https://github.com/coreui>
-* <https://github.com/orgs/coreui/people>
+For any questions or issues, feel free to open an issue on GitHub or reach out to the project maintainers.
 
-## Community
-
-Get updates on CoreUI's development and chat with the project maintainers and community members.
-
-- Follow [@core_ui on Twitter](https://twitter.com/core_ui).
-- Read and subscribe to [CoreUI Blog](https://coreui.ui/blog/).
-
-## Support CoreUI Development
-
-CoreUI is an MIT-licensed open source project and is completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support development by buying the [CoreUI PRO](https://coreui.io/pricing/?framework=react&src=github-coreui-free-react-admin-template) or by becoming a sponsor via [Open Collective](https://opencollective.com/coreui/).
-
-## Copyright and License
-
-copyright 2025 creativeLabs Łukasz Holeczek.   
-
-Code released under [the MIT license](https://github.com/coreui/coreui-free-react-admin-template/blob/main/LICENSE).
+- **Author**: Shadik Hasan
+- **GitHub**: [shadikhasan](https://github.com/shadikhasan)
