@@ -131,6 +131,7 @@ const Reports = () => {
 
   return (
     <Container className="mt-5">
+      
       <Row className="mb-4">
         <Col className="text-center">
           <h2>{reportType === 'weekly' ? 'Weekly' : 'Monthly'} Report</h2>

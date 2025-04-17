@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { authAxios } from '../../../axiosConfig'
 import {
   CButton,
@@ -17,7 +16,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const Login = () => {
@@ -26,35 +25,37 @@ const Login = () => {
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
+  // 🚫 Redirect if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem('access_token')
+    if (token) {
+      navigate('/dashboard') // Change this to your default logged-in route
+    }
+  }, [navigate])
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
-      // Send the POST request to the login endpoint
       const response = await authAxios.post('/accounts/login/', { email, password })
-
       const { access, refresh } = response.data
 
-      // Store the tokens in localStorage
       localStorage.setItem('access_token', access)
       localStorage.setItem('refresh_token', refresh)
 
-      // Fetch profile data using the access token
       const profileResponse = await authAxios.get('/accounts/profile/', {
         headers: { Authorization: `Bearer ${access}` },
       })
 
-      // Store user role data in localStorage
       const { is_staff, is_superuser } = profileResponse.data
       localStorage.setItem('is_staff', is_staff)
       localStorage.setItem('is_superuser', is_superuser)
-      
-      // Success: Redirect to a protected route after successful login
+
       toast.success('Login successful! Redirecting to dashboard...')
-      navigate('/dashboard') // Change '/dashboard' to the desired route
+      navigate('/dashboard')
     } catch (err) {
       setError('Invalid credentials or error occurred.')
-      toast.error('Invalid credentials or error occurred.') // Error message with Toastify
+      toast.error('Invalid credentials or error occurred.')
     }
   }
 

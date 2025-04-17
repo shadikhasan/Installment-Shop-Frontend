@@ -8,9 +8,13 @@ import {
   cilChartPie,
   cilSpeedometer,
   cilStar,
+  cilCart ,
+  cilMoney,
+  cilCreditCard,
+  cilLaptop,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
-import { FaConciergeBell } from 'react-icons/fa'
+import { FaConciergeBell, FaMoneyBill, FaBoxOpen   } from 'react-icons/fa'
 
 // This function returns the navigation based on login status
 const getNav = () => {
@@ -38,20 +42,20 @@ const getNav = () => {
       component: CNavItem,
       name: 'Products',
       to: '/products',
-      icon: <CIcon icon={cibProductHunt} customClassName="nav-icon" />,
+      icon: <CIcon icon={cilLaptop   } customClassName="nav-icon" />,
     },
     ...(isLoggedIn ? [
       {
         component: CNavItem,
         name: 'Installments',
         to: '/installments',
-        icon: <CIcon icon={cibProductHunt} customClassName="nav-icon" />,
+        icon: <CIcon icon={cilCreditCard} customClassName="nav-icon" />,
       },
       {
         component: CNavItem,
         name: 'Purchases',
         to: '/purchase',
-        icon: <CIcon icon={cibProductHunt} customClassName="nav-icon" />,
+        icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
       },
     ] : []),
     {

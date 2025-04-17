@@ -1,113 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import AllInstallments from './AllInstallments';
-import PayInstallment from './PayInstallment';
-import { authAxios } from '../../axiosConfig';
-import { FaCreditCard } from 'react-icons/fa';
-
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  Modal,
-  Spinner,
-  Alert,
-} from 'react-bootstrap';
-import { FaMoneyBillWave } from 'react-icons/fa';
+import NextDueInstallment from './NextDueInstallment';
+import { Container, Row, Col } from 'react-bootstrap';
 
 const InstallmentsPage = () => {
-  const [nextInstallment, setNextInstallment] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [showModal, setShowModal] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
+  // Auto-refresh every 30 seconds
   useEffect(() => {
-    authAxios
-      .get('/installments/next-due/')
-      .then((res) => {
-        setNextInstallment(res.data);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError('Failed to load next due installment.');
-        setLoading(false);
-      });
-  }, []);
+    const interval = setInterval(() => {
+      setRefreshTrigger(prev => prev + 1);
+    }, 30000); // 30 seconds
 
-  const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Container className="mt-5">
-      <h1 className="text-center mb-4">Your Installments</h1>
+      <h1 className="text-center mb-4">My Next Due</h1>
 
-      <Row className="mt-4">
-        <Col lg={12}>
-          <Card className="shadow-sm rounded-4">
-            <Card.Header className="bg-warning d-flex justify-content-between align-items-center">
-              <strong>Next Due Installment</strong>
-              {nextInstallment && (
-                <Button variant="success" onClick={handleOpenModal}>
-                  <FaMoneyBillWave className="me-1" />
-                  Pay Now
-                </Button>
-              )}
-            </Card.Header>
-            <Card.Body>
-              {loading ? (
-                <div className="text-center">
-                  <Spinner animation="border" variant="warning" />
-                </div>
-              ) : error ? (
-                <Alert variant="danger">{error}</Alert>
-              ) : nextInstallment ? (
-                <table className="table table-bordered text-center">
-                  <thead className="table-light">
-                    <tr>
-                      <th>Product Name</th>
-                      <th>Installment No.</th>
-                      <th>Due Amount</th>
-                      <th>Due Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{nextInstallment.product_name}</td>
-                      <td>{nextInstallment.installment_number}</td>
-                      <td>৳{parseFloat(nextInstallment.due_amount).toFixed(2)}</td>
-                      <td>{new Date(nextInstallment.due_date).toLocaleDateString()}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              ) : (
-                <Alert variant="info">No due installments found.</Alert>
-              )}
-            </Card.Body>
-          </Card>
+      <Row className="mb-4">
+        <Col>
+          <NextDueInstallment refreshTrigger={refreshTrigger} />
         </Col>
       </Row>
 
       <Row>
-        <Col lg={12}>
-          <AllInstallments />
+        <Col>
+          <AllInstallments refreshTrigger={refreshTrigger} />
         </Col>
       </Row>
-
-
-      {/* Modal for PayInstallment */}
-      <Modal show={showModal} onHide={handleCloseModal} centered size="md">
-        <Modal.Header closeButton className="bg-success text-white">
-          <Modal.Title>Pay Installment <FaCreditCard/></Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="d-flex justify-content-center">
-            {nextInstallment && (
-              <PayInstallment installmentId={nextInstallment.id} />
-            )}
-          </div>
-        </Modal.Body>
-      </Modal>
     </Container>
   );
 };

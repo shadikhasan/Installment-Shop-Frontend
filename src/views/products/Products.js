@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import { publicAxios, authAxios } from '../../axiosConfig'
 import {
   CCard,
@@ -18,6 +19,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const Products = () => {
+  const navigate = useNavigate()
   const [products, setProducts] = useState([])
   const [filteredProducts, setFilteredProducts] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
@@ -83,7 +85,10 @@ const Products = () => {
   }
 
   const handlePurchase = (product) => {
-    if (!isLoggedIn) return toast.info('Please log in to purchase.')
+    if (!isLoggedIn) {
+      navigate('/login')
+      return toast.info('Please log in to purchase.')
+    }
     setSelectedProduct(product)
     setPurchaseForm({
       quantity: 1,
@@ -180,7 +185,7 @@ const Products = () => {
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
   const currentProducts = filteredProducts.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   )
 
   const handlePageChange = (pageNumber) => {
@@ -219,11 +224,11 @@ const Products = () => {
                     <p>
                       <strong>Price:</strong> ৳{product.price}
                     </p>
-                    {isLoggedIn && (
-                      <CButton color="primary" onClick={() => handlePurchase(product)}>
-                        Purchase
-                      </CButton>
-                    )}
+
+                    <CButton color="primary" onClick={() => handlePurchase(product)}>
+                      Purchase
+                    </CButton>
+
                     {isAdmin && (
                       <div className="mt-2 d-flex gap-2">
                         <CButton color="info" size="sm" onClick={() => handleEdit(product)}>

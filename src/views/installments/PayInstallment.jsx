@@ -11,7 +11,7 @@ import {
 } from 'react-bootstrap';
 import { FaCreditCard } from 'react-icons/fa';
 
-const PayInstallment = ({ installmentId }) => {
+const PayInstallment = ({ installmentId, payAmount }) => {
   const [amount, setAmount] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -40,21 +40,22 @@ const PayInstallment = ({ installmentId }) => {
 
   return (
     <Container className="m-4">
+      <h2>Amount to Pay: ৳{payAmount}</h2>
       <Row className="justify-content-center">
         {/* Increase column size for wider view */}
         <Col>
-          <Card className="shadow-lg rounded-4">
+          <div className="">
             
-            <Card.Body>
+            <>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="amount">
-                  <Form.Label>Amount (৳) </Form.Label>
+                  
                   <Form.Control
                     type="number"
                     placeholder="Enter payment amount"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    min="1"
+                    min="0.00"
                     step="0.01"
                     required
                   />
@@ -67,8 +68,8 @@ const PayInstallment = ({ installmentId }) => {
 
               {message && <Alert variant="success" className="mt-3">{message}</Alert>}
               {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
-            </Card.Body>
-          </Card>
+            </>
+          </div>
         </Col>
       </Row>
     </Container>

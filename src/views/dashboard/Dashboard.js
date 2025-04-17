@@ -53,12 +53,16 @@ import PaymentHistoryTitle from './PaymentHistoryTitle'
 import { Link } from 'react-router-dom'
 import TotalProducts from '../../components/TotalProducts'
 import TotalProductCategories from '../../components/TotalProductCategories'
+import OtpVerify from '../pages/register/OTPVerify'
 
 
 const Dashboard = () => {
   const isAdmin = localStorage.getItem('is_superuser') === 'true'
+  const isLoggedIn = !!localStorage.getItem('access_token')
+
   return (
     <>
+   
       {isAdmin && (
         <Card className="h-60 shadow-sm">
           <Row className="mb-4">
@@ -80,7 +84,7 @@ const Dashboard = () => {
         </Card>
       )}
 
-      {!isAdmin && <UserSummary />}
+      {!isAdmin && isLoggedIn && <UserSummary />}
 
       {isAdmin && (
         <CCard className="mb-4 mt-4">

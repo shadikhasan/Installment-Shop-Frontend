@@ -1,68 +1,91 @@
-import React, { useState, useEffect } from 'react';
-import { authAxios } from '../../axiosConfig';
-import { Spinner, Alert, Table, Container, Row, Col, Form, Button } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react'
+import { authAxios } from '../../axiosConfig'
+import { Spinner, Alert, Table, Container, Row, Col, Form, Button } from 'react-bootstrap'
 
 const AllInstallments = () => {
-  const [installments, setInstallments] = useState([]);
-  const [filteredInstallments, setFilteredInstallments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [installments, setInstallments] = useState([])
+  const [filteredInstallments, setFilteredInstallments] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6; // Number of installments per page
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10 // Number of installments per page
 
   useEffect(() => {
     authAxios
       .get('/installments/')
       .then((response) => {
-        setInstallments(response.data);
-        setFilteredInstallments(response.data);
+        if (response.data.length === 0) {
+          setError('You have no installments.');
+        } else {
+          // Sort: due → partial → paid
+          const statusOrder = { due: 0, partial: 1, paid: 2 };
+          const sortedInstallments = response.data.sort(
+            (a, b) => statusOrder[a.status] - statusOrder[b.status]
+          );
+  
+          setInstallments(sortedInstallments);
+          setFilteredInstallments(sortedInstallments);
+        }
         setLoading(false);
       })
       .catch((err) => {
-        setError('Failed to load installments.');
+        if (err.response?.status === 404) {
+          setError('You have no installments.');
+        } else {
+          setError('Failed to load installments.');
+        }
         setLoading(false);
       });
   }, []);
+  
 
   // Function to format date to a readable string (e.g., "April 15, 2025")
   const formatDate = (date) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(date).toLocaleDateString('en-US', options);
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    };
+    return new Date(date).toLocaleString('en-US', options);
   };
+  
 
   // Handle search input
   const handleSearchChange = (e) => {
-    const query = e.target.value.toLowerCase();
-    setSearchQuery(query);
+    const query = e.target.value.toLowerCase()
+    setSearchQuery(query)
 
     // Filter installments based on search query
     const filtered = installments.filter(
       (installment) =>
         installment.product_name.toLowerCase().includes(query) ||
-        installment.status.toLowerCase().includes(query)
-    );
-    setFilteredInstallments(filtered);
-    setCurrentPage(1); // Reset to the first page when search query changes
-  };
+        installment.status.toLowerCase().includes(query),
+    )
+    setFilteredInstallments(filtered)
+    setCurrentPage(1) // Reset to the first page when search query changes
+  }
 
   // Pagination logic
-  const totalPages = Math.ceil(filteredInstallments.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredInstallments.length / itemsPerPage)
   const currentInstallments = filteredInstallments.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+    currentPage * itemsPerPage,
+  )
 
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+    setCurrentPage(pageNumber)
+  }
 
   return (
     <Container className="mt-5">
       <Row className="mb-4">
         <Col>
-          <h2 className="text-center">All Installments</h2>
+          <h2 className="text-center">My All Installments</h2>
         </Col>
       </Row>
 
@@ -75,19 +98,20 @@ const AllInstallments = () => {
 
       {error && <Alert variant="danger">{error}</Alert>}
 
-      <Row className="mb-4">
-        <Col>
-          <Form.Control
-            type="text"
-            placeholder="Search by product name or status"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-        </Col>
-      </Row>
-
-      {!loading && !error && (
+      {/* Conditionally render search bar and pagination if there are installments */}
+      {!loading && !error && filteredInstallments.length > 0 && (
         <>
+          <Row className="mb-4">
+            <Col>
+              <Form.Control
+                type="text"
+                placeholder="Search by product name or status"
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+            </Col>
+          </Row>
+
           <Table striped bordered hover responsive>
             <thead className="table-dark">
               <tr>
@@ -106,7 +130,7 @@ const AllInstallments = () => {
                 <tr key={installment.id}>
                   <td>{(currentPage - 1) * itemsPerPage + index + 1}</td> {/* Serial Number */}
                   <td>{installment.product_name}</td>
-                  <td>{installment.installment_number + 1}</td>
+                  <td>{installment.installment_number}</td>
                   <td>{installment.paid_amount}</td>
                   <td>{installment.due_amount}</td>
                   <td>{formatDate(installment.due_date)}</td>
@@ -116,8 +140,8 @@ const AllInstallments = () => {
                         installment.status === 'paid'
                           ? 'bg-success'
                           : installment.status === 'due'
-                          ? 'bg-warning text-dark'
-                          : 'bg-danger'
+                            ? 'bg-warning text-dark'
+                            : 'bg-danger'
                       }`}
                     >
                       {installment.status}
@@ -158,8 +182,15 @@ const AllInstallments = () => {
           </div>
         </>
       )}
-    </Container>
-  );
-};
 
-export default AllInstallments;
+      {/* Hide pagination and search bar if no installments */}
+      {!loading && !error && filteredInstallments.length === 0 && (
+        <div className="text-center">
+          <Alert variant="info">No installments available.</Alert>
+        </div>
+      )}
+    </Container>
+  )
+}
+
+export default AllInstallments

@@ -69,11 +69,11 @@ const AppHeaderDropdown = () => {
           <CBadge color="success" className="ms-2">42</CBadge>
         </CDropdownItem>
         <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Settings</CDropdownHeader>
-        <CDropdownItem onClick={handleProfileClick}>
+        <CDropdownItem onClick={handleProfileClick} style={{ cursor: 'pointer' }}>
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
-        <CDropdownItem href="/profile">
+        <CDropdownItem href="#">
           <CIcon icon={cilSettings} className="me-2" />
           Settings
         </CDropdownItem>
