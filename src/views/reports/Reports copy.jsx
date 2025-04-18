@@ -19,8 +19,6 @@ import { saveAs } from 'file-saver'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import { authAxios } from '../../axiosConfig'
-import ReportChart from './ReportChart' // Import the new chart component
-
 
 const Reports = () => {
   const [reportType, setReportType] = useState('weekly') // "weekly" or "monthly"
@@ -36,7 +34,7 @@ const Reports = () => {
     setLoading(true)
     setError('')
     authAxios
-      .get(`/reports/payment-summary/${reportType}/`) // Dynamically call API
+      .get(`/reports/${reportType}/`) // Dynamically call API
       .then((response) => {
         setReportData(response.data)
         setLoading(false)
@@ -54,8 +52,8 @@ const Reports = () => {
   useEffect(() => {
     const filtered = reportData.filter(
       (row) =>
-        (row.username?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
-        (row.email?.toLowerCase() || '').includes(searchQuery.toLowerCase())
+        (row.customer_username?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
+        (row.customer_email?.toLowerCase() || '').includes(searchQuery.toLowerCase())
     )
     setFilteredData(filtered)
     setCurrentPage(1) // Reset to first page on new search
@@ -68,17 +66,17 @@ const Reports = () => {
     }
 
     const dataToExport = filteredData.map((row) => ({
-      'Customer Id': row.id,
-      'Customer Username': row.username,
-      'Customer Email': row.email,
-      'Total Paid Amount': row.total_paid_amount.toFixed(2),
-      'Total Due Amount': row.total_due_amount.toFixed(2),
-      'Total Purchase Count': row.total_purchase_count,
-      'Total Product Quantity': row.total_product_quantity,
-      'Total Installment Count': row.total_installment_count,
-      'Fully Paid Purchases': row.fully_paid_purchases,
-      'Due Purchases': row.due_purchases,
-      Status: row.overall_status,
+      'Customer Id': row.customer_id,
+      'Customer Username': row.customer_username,
+      'Customer Email': row.customer_email,
+      'Total Purchases': row.purchase_data.total_purchases,
+      'Total Items': row.purchase_data.total_items,
+      'Total Paid': row.installment_data.total_paid,
+      'Total Due': row.installment_data.total_due,
+      'Installment No.': row.installment_number,
+      'Paid Amount': row.paid_amount,
+      'Due Amount': row.due_amount,
+      Status: row.status,
     }))
 
     const worksheet = XLSX.utils.json_to_sheet(dataToExport)
@@ -99,17 +97,17 @@ const Reports = () => {
     doc.text(`${reportType === 'weekly' ? 'Weekly' : 'Monthly'} Report`, 14, 15)
 
     const tableData = filteredData.map((row) => [
-      row.id,
-      row.username,
-      row.email,
-      row.total_paid_amount.toFixed(2),
-      row.total_due_amount.toFixed(2),
-      row.total_purchase_count,
-      row.total_product_quantity,
-      row.total_installment_count,
-      row.fully_paid_purchases,
-      row.due_purchases,
-      row.overall_status,
+      row.customer_id,
+      row.customer_username,
+      row.customer_email,
+      row.purchase_data.total_purchases.toFixed(2),
+      row.purchase_data.total_items,
+      row.installment_data.total_paid.toFixed(2),
+      row.installment_data.total_due.toFixed(2),
+      row.installment_number,
+      row.paid_amount.toFixed(2),
+      row.due_amount.toFixed(2),
+      row.status,
     ])
 
     autoTable(doc, {
@@ -118,13 +116,13 @@ const Reports = () => {
           'Customer ID',
           'Customer Username',
           'Customer Email',
-          'Total Paid Amount',
-          'Total Due Amount',
-          'Total Purchase Count',
-          'Total Product Quantity',
-          'Total Installment Count',
-          'Fully Paid Purchases',
-          'Due Purchases',
+          'Total Purchases',
+          'Total Items',
+          'Total Paid',
+          'Total Due',
+          'Installment No.',
+          'Paid Amount',
+          'Due Amount',
           'Status',
         ],
       ],
@@ -153,8 +151,7 @@ const Reports = () => {
 
   return (
     <Container className="mt-5">
-      <ReportChart data={currentData} /> {/* Add the chart here */}
-      <Row className="mb-4 mt-4">
+      <Row className="mb-4">
         <Col className="text-center">
           <h2>{reportType === 'weekly' ? 'Weekly' : 'Monthly'} Report</h2>
         </Col>
@@ -230,41 +227,41 @@ const Reports = () => {
                 <th>Customer ID</th>
                 <th>Customer Username</th>
                 <th>Customer Email</th>
-                <th>Total Paid Amount</th>
-                <th>Total Due Amount</th>
-                <th>Total Purchase Count</th>
-                <th>Total Product Quantity</th>
-                <th>Total Installment Count</th>
-                <th>Fully Paid Purchases</th>
-                <th>Due Purchases</th>
+                <th>Total Purchases</th>
+                <th>Total Items</th>
+                <th>Total Paid</th>
+                <th>Total Due</th>
+                <th>Installment Number</th>
+                <th>Paid Amount</th>
+                <th>Due Amount</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
               {currentData.map((row, index) => (
                 <tr key={index}>
-                  <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
-                  <td>{row.id}</td>
-                  <td>{row.username}</td>
-                  <td>{row.email}</td>
-                  <td>{row.total_paid_amount.toFixed(2)}</td>
-                  <td>{row.total_due_amount.toFixed(2)}</td>
-                  <td>{row.total_purchase_count}</td>
-                  <td>{row.total_product_quantity}</td>
-                  <td>{row.total_installment_count}</td>
-                  <td>{row.fully_paid_purchases}</td>
-                  <td>{row.due_purchases}</td>
+                  <td>{(currentPage - 1) * itemsPerPage + index + 1}</td> {/* Serial Number */}
+                  <td>{row.customer_id}</td>
+                  <td>{row.customer_username}</td>
+                  <td>{row.customer_email}</td>
+                  <td>{row.purchase_data.total_purchases.toFixed(2)}</td>
+                  <td>{row.purchase_data.total_items}</td>
+                  <td>{row.installment_data.total_paid.toFixed(2)}</td>
+                  <td>{row.installment_data.total_due.toFixed(2)}</td>
+                  <td>{row.installment_number}</td>
+                  <td>{row.paid_amount.toFixed(2)}</td>
+                  <td>{row.due_amount.toFixed(2)}</td>
                   <td>
                     <span
                       className={`badge ${
-                        row.overall_status === 'paid'
+                        row.status === 'paid'
                           ? 'bg-success'
-                          : row.overall_status === 'due'
+                          : row.status === 'due'
                           ? 'bg-warning text-dark'
                           : 'bg-danger'
                       }`}
                     >
-                      {row.overall_status}
+                      {row.status}
                     </span>
                   </td>
                 </tr>

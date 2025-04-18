@@ -18,6 +18,7 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { AppHeader } from '../../../components'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -57,7 +58,9 @@ const Register = () => {
   }
 
   return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
+    <>
+    <AppHeader />
+    <div className="mt-5">
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={8}>
@@ -159,6 +162,7 @@ const Register = () => {
         </CRow>
       </CContainer>
     </div>
+    </>
   )
 }
 
