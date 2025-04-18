@@ -1,9 +1,11 @@
 // axiosConfig.js
 import axios from 'axios'
 
+const baseUrl = "http://13.48.138.180:8000"
+
 // Public axios instance (without token)
 const publicAxios = axios.create({
-  baseURL: 'http://127.0.0.1:8000',
+  baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -11,7 +13,7 @@ const publicAxios = axios.create({
 
 // Authenticated axios instance (with token)
 const authAxios = axios.create({
-  baseURL: 'http://127.0.0.1:8000',
+  baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -26,4 +28,4 @@ authAxios.interceptors.request.use((config) => {
   return config
 })
 
-export { publicAxios, authAxios }
+export { publicAxios, authAxios, baseUrl }

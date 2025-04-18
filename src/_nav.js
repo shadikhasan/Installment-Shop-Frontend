@@ -15,6 +15,7 @@ import {
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 import { FaConciergeBell, FaMoneyBill, FaBoxOpen   } from 'react-icons/fa'
+import { baseUrl } from './axiosConfig'
 
 // This function returns the navigation based on login status
 const getNav = () => {
@@ -74,7 +75,7 @@ const getNav = () => {
       {
         component: CNavItem,
         name: 'Full Admin Access',
-        to: 'http://127.0.0.1:8000/admin',
+        to: `${baseUrl}/admin`,
         icon: <CIcon icon={cibOpenAccess} customClassName="nav-icon" />,
       },
     ] : []),
