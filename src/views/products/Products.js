@@ -42,7 +42,7 @@ const Products = () => {
   const isLoggedIn = !!localStorage.getItem('access_token')
 
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 6 // Number of products per page
+  const [itemsPerPage, setItemsPerPage] = useState(20)
 
   useEffect(() => {
     fetchProducts()
@@ -200,6 +200,7 @@ const Products = () => {
             <h4 className="mb-0">Product List</h4>
             <div className="small text-body-secondary">Available Products</div>
           </div>
+
           <CFormInput
             type="text"
             placeholder="Search by name or description"
@@ -213,6 +214,26 @@ const Products = () => {
             </CButton>
           )}
         </CCardHeader>
+        {/* Items Per Page Controls */}
+        {/* Items Per Page Dropdown */}
+        <div className="d-flex justify-content-start align-items-center mx-3 mt-1 gap-2">
+          <span>Items per page:</span>
+          <select
+            className="form-select w-auto"
+            value={itemsPerPage}
+            onChange={(e) => {
+              setItemsPerPage(parseInt(e.target.value))
+              setCurrentPage(1) // Reset to first page when per page changes
+            }}
+          >
+            {[5, 10, 20, 30, 50, 100].map((count) => (
+              <option key={count} value={count}>
+                {count}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <CCardBody>
           <CRow>
             {currentProducts.map((product) => (

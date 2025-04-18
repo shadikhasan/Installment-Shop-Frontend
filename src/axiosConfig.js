@@ -1,7 +1,7 @@
 // axiosConfig.js
 import axios from 'axios'
 
-const baseUrl = "https://installmentshop-production.up.railway.app/"
+const baseUrl = "http://127.0.0.1:8000/"
 
 // Public axios instance (without token)
 const publicAxios = axios.create({

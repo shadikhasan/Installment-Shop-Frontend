@@ -237,7 +237,7 @@ const Reports = () => {
                 <th>Total Installment Count</th>
                 <th>Fully Paid Purchases</th>
                 <th>Due Purchases</th>
-                <th>Status</th>
+                <th>Overall Status</th>
               </tr>
             </thead>
             <tbody>
