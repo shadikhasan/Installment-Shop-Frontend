@@ -1,5 +1,5 @@
 
-# Installment Shop Frontend
+# Installment Shop Frontend (final version 1.0)
 
 ## Description
 
