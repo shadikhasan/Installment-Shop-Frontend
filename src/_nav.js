@@ -12,10 +12,13 @@ import {
   cilMoney,
   cilCreditCard,
   cilLaptop,
+  cibAboutMe,
+  cilInfo,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 import { FaConciergeBell, FaMoneyBill, FaBoxOpen   } from 'react-icons/fa'
 import { baseUrl } from './axiosConfig'
+import { info } from 'sass'
 
 // This function returns the navigation based on login status
 const getNav = () => {
@@ -79,6 +82,12 @@ const getNav = () => {
         icon: <CIcon icon={cibOpenAccess} customClassName="nav-icon" />,
       },
     ] : []),
+    {
+      component: CNavItem,
+      name: 'About',
+      to: '/about',
+      icon: <CIcon icon={cilInfo} customClassName="nav-icon" />,
+    },
   ]
 }
 

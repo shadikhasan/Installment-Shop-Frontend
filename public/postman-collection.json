@@ -1,0 +1,1649 @@
+{
+	"info": {
+		"_postman_id": "db6ce2b6-d021-48aa-ae7c-3cf07ac8b779",
+		"name": "Installment Management API with Documentation",
+		"description": "API for a shop selling products with installment payments. Features OTP-based registration, payment tracking, and weekly/monthly reports.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32760727"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "POST /accounts/register/",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"securepassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/accounts/register/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"accounts",
+								"register",
+								""
+							]
+						},
+						"description": "Register a new customer and send a 6-digit OTP to their email.\n\n**Fields**:\n- `username`: String, required.\n- `email`: Valid email, required.\n- `password`: String, required (write-only).\n\n**Validations**:\n- Email must be unique.\n- OTP expires in 10 minutes.\n\n**Permissions**: Public."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"securepassword123\"\n}"
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/accounts/register/",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"accounts",
+										"register",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 19 Apr 2025 08:39:13 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.1"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "56"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User registered. Check your email for OTP.\"\n}"
+						},
+						{
+							"name": "Error - Duplicate Email",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"securepassword123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/accounts/register/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"accounts",
+										"register",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 19 Apr 2025 08:41:31 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.1"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "107"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"username\": [\n        \"A user with that username already exists.\"\n    ],\n    \"email\": [\n        \"user with this email already exists.\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "POST /accounts/verify-otp/",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john@example.com\",\n  \"otp_code\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/accounts/verify-otp/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"accounts",
+								"verify-otp",
+								""
+							]
+						},
+						"description": "Verify OTP to activate the user account.\n\n**Fields**:\n- `email`: Valid email, required.\n- `otp_code`: 6-digit OTP, required.\n\n**Validations**:\n- OTP must match and not be expired.\n- Email must exist.\n\n**Permissions**: Public."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"john@example.com\",\n  \"otp_code\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/accounts/verify-otp/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"accounts",
+										"verify-otp",
+										""
+									]
+								},
+								"description": "Verify OTP to activate the user account.\n\n**Fields**:\n- `email`: Valid email, required.\n- `otp_code`: 6-digit OTP, required.\n\n**Validations**:\n- OTP must match and not be expired.\n- Email must exist.\n\n**Permissions**: Public."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"message\": \"Account verified successfully.\"}"
+						},
+						{
+							"name": "Error - Invalid OTP",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"john@example.com\",\n  \"otp_code\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/accounts/verify-otp/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"accounts",
+										"verify-otp",
+										""
+									]
+								},
+								"description": "Verify OTP to activate the user account.\n\n**Fields**:\n- `email`: Valid email, required.\n- `otp_code`: 6-digit OTP, required.\n\n**Validations**:\n- OTP must match and not be expired.\n- Email must exist.\n\n**Permissions**: Public."
+							},
+							"status": 400,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"non_field_errors\": [\"Invalid OTP.\"]}"
+						},
+						{
+							"name": "Error - OTP Expired",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"john@example.com\",\n  \"otp_code\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/accounts/verify-otp/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"accounts",
+										"verify-otp",
+										""
+									]
+								},
+								"description": "Verify OTP to activate the user account.\n\n**Fields**:\n- `email`: Valid email, required.\n- `otp_code`: 6-digit OTP, required.\n\n**Validations**:\n- OTP must match and not be expired.\n- Email must exist.\n\n**Permissions**: Public."
+							},
+							"status": 400,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"non_field_errors\": [\"OTP expired.\"]}"
+						}
+					]
+				},
+				{
+					"name": "POST /accounts/login/",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"securepassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/accounts/login/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"accounts",
+								"login",
+								""
+							]
+						},
+						"description": "Login to obtain JWT tokens.\n\n**Fields**:\n- `email`: Valid email, required.\n- `password`: String, required.\n\n**Validations**:\n- Account must be verified via OTP.\n- Credentials must be valid.\n\n**Permissions**: Public."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"securepassword123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/accounts/login/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"accounts",
+										"login",
+										""
+									]
+								},
+								"description": "Login to obtain JWT tokens.\n\n**Fields**:\n- `email`: Valid email, required.\n- `password`: String, required.\n\n**Validations**:\n- Account must be verified via OTP.\n- Credentials must be valid.\n\n**Permissions**: Public."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n  \"refresh\": \"eyJ0eXAiOiJKV1Qi...\",\n  \"access\": \"eyJ0eXAiOiJKV1Qi...\"\n}"
+						},
+						{
+							"name": "Error - Not Verified",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"securepassword123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/accounts/login/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"accounts",
+										"login",
+										""
+									]
+								},
+								"description": "Login to obtain JWT tokens.\n\n**Fields**:\n- `email`: Valid email, required.\n- `password`: String, required.\n\n**Validations**:\n- Account must be verified via OTP.\n- Credentials must be valid.\n\n**Permissions**: Public."
+							},
+							"status": 400,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"non_field_errors\": [\"Account not verified with OTP.\"]}"
+						},
+						{
+							"name": "Error - Invalid Credentials",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"securepassword123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/accounts/login/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"accounts",
+										"login",
+										""
+									]
+								},
+								"description": "Login to obtain JWT tokens.\n\n**Fields**:\n- `email`: Valid email, required.\n- `password`: String, required.\n\n**Validations**:\n- Account must be verified via OTP.\n- Credentials must be valid.\n\n**Permissions**: Public."
+							},
+							"status": 400,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"non_field_errors\": [\"Invalid credentials.\"]}"
+						}
+					]
+				},
+				{
+					"name": "GET /accounts/profile/",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/accounts/profile/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"accounts",
+								"profile",
+								""
+							]
+						},
+						"description": "Retrieve the authenticated user's profile.\n\n**Permissions**: Authenticated users."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/accounts/profile/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"accounts",
+										"profile",
+										""
+									]
+								},
+								"description": "Retrieve the authenticated user's profile.\n\n**Permissions**: Authenticated users."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n  \"id\": 1,\n  \"username\": \"john_doe\",\n  \"email\": \"john@example.com\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"date_joined\": \"2025-04-19T00:00:00Z\",\n  \"is_verified\": true,\n  \"is_staff\": false,\n  \"is_superuser\": false\n}"
+						},
+						{
+							"name": "Error - Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/accounts/profile/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"accounts",
+										"profile",
+										""
+									]
+								},
+								"description": "Retrieve the authenticated user's profile.\n\n**Permissions**: Authenticated users."
+							},
+							"status": 401,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"detail\": \"Authentication credentials were not provided.\"}"
+						}
+					]
+				},
+				{
+					"name": "PATCH /accounts/profile/",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/accounts/profile/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"accounts",
+								"profile",
+								""
+							]
+						},
+						"description": "Update the authenticated user's first_name and last_name.\n\n**Fields**:\n- `first_name`: String, optional.\n- `last_name`: String, optional.\n\n**Permissions**: Authenticated users."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/accounts/profile/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"accounts",
+										"profile",
+										""
+									]
+								},
+								"description": "Update the authenticated user's first_name and last_name.\n\n**Fields**:\n- `first_name`: String, optional.\n- `last_name`: String, optional.\n\n**Permissions**: Authenticated users."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n  \"message\": \"Profile updated successfully\",\n  \"updated_fields\": {\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\"\n  }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "GET /products/",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/products/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								""
+							]
+						},
+						"description": "List all products.\n\n**Permissions**: Public."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/products/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"products",
+										""
+									]
+								},
+								"description": "List all products.\n\n**Permissions**: Public."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 1,\n    \"name\": \"Laptop\",\n    \"price\": 10000\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Phone\",\n    \"price\": 5000\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "POST /products/",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Tablet\",\n  \"price\": 7000\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/products/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								""
+							]
+						},
+						"description": "Create a new product.\n\n**Fields**:\n- `name`: String, required.\n- `price`: Decimal, required.\n\n**Permissions**: Admin only."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Tablet\",\n  \"price\": 7000\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/products/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"products",
+										""
+									]
+								},
+								"description": "Create a new product.\n\n**Fields**:\n- `name`: String, required.\n- `price`: Decimal, required.\n\n**Permissions**: Admin only."
+							},
+							"status": 201,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n  \"id\": 3,\n  \"name\": \"Tablet\",\n  \"price\": 7000\n}"
+						},
+						{
+							"name": "Error - Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Tablet\",\n  \"price\": 7000\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/products/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"products",
+										""
+									]
+								},
+								"description": "Create a new product.\n\n**Fields**:\n- `name`: String, required.\n- `price`: Decimal, required.\n\n**Permissions**: Admin only."
+							},
+							"status": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"detail\": \"You do not have permission to perform this action.\"}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Purchases",
+			"item": [
+				{
+					"name": "POST /purchases/create/",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"product\": 1,\n  \"quantity\": 2,\n  \"first_installment_amount\": 6000,\n  \"installment_count\": 3\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/purchases/create/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"purchases",
+								"create",
+								""
+							]
+						},
+						"description": "Create a new purchase with installment plan.\n\n**Fields**:\n- `product`: Integer (product ID), required.\n- `quantity`: Integer, required (≥ 1).\n- `first_installment_amount`: Decimal, required.\n- `installment_count`: Integer, required (≥ 1).\n\n**Validations**:\n- `first_installment_amount` ≥ 30% of total price if `installment_count` > 1.\n- If `installment_count` = 1, `first_installment_amount` must equal total price.\n- `first_installment_amount` cannot exceed total price.\n\n**Permissions**: Authenticated users."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"product\": 1,\n  \"quantity\": 2,\n  \"first_installment_amount\": 6000,\n  \"installment_count\": 3\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/purchases/create/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"purchases",
+										"create",
+										""
+									]
+								},
+								"description": "Create a new purchase with installment plan.\n\n**Fields**:\n- `product`: Integer (product ID), required.\n- `quantity`: Integer, required (≥ 1).\n- `first_installment_amount`: Decimal, required.\n- `installment_count`: Integer, required (≥ 1).\n\n**Validations**:\n- `first_installment_amount` ≥ 30% of total price if `installment_count` > 1.\n- If `installment_count` = 1, `first_installment_amount` must equal total price.\n- `first_installment_amount` cannot exceed total price.\n\n**Permissions**: Authenticated users."
+							},
+							"status": 201,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n  \"id\": 1,\n  \"product\": 1,\n  \"product_name\": \"Laptop\",\n  \"quantity\": 2,\n  \"total_price\": 20000,\n  \"first_installment_amount\": 6000,\n  \"installment_count\": 3,\n  \"status\": \"due\"\n}"
+						},
+						{
+							"name": "Error - Insufficient First Installment",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"product\": 1,\n  \"quantity\": 2,\n  \"first_installment_amount\": 6000,\n  \"installment_count\": 3\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/purchases/create/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"purchases",
+										"create",
+										""
+									]
+								},
+								"description": "Create a new purchase with installment plan.\n\n**Fields**:\n- `product`: Integer (product ID), required.\n- `quantity`: Integer, required (≥ 1).\n- `first_installment_amount`: Decimal, required.\n- `installment_count`: Integer, required (≥ 1).\n\n**Validations**:\n- `first_installment_amount` ≥ 30% of total price if `installment_count` > 1.\n- If `installment_count` = 1, `first_installment_amount` must equal total price.\n- `first_installment_amount` cannot exceed total price.\n\n**Permissions**: Authenticated users."
+							},
+							"status": 400,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"first_installment_amount\": \"First installment must be at least 30% of total price (৳6000.00).\"}"
+						}
+					]
+				},
+				{
+					"name": "GET /purchases/",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/purchases/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"purchases",
+								""
+							]
+						},
+						"description": "List all purchases (admin only).\n\n**Permissions**: Admin only."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/purchases/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"purchases",
+										""
+									]
+								},
+								"description": "List all purchases (admin only).\n\n**Permissions**: Admin only."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 1,\n    \"product_name\": \"Laptop\",\n    \"total_price\": 20000,\n    \"quantity\": 2,\n    \"status\": \"due\"\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "GET /purchases/my/",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/purchases/my/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"purchases",
+								"my",
+								""
+							]
+						},
+						"description": "List authenticated user's purchases.\n\n**Permissions**: Authenticated users."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/purchases/my/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"purchases",
+										"my",
+										""
+									]
+								},
+								"description": "List authenticated user's purchases.\n\n**Permissions**: Authenticated users."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 1,\n    \"product_name\": \"Laptop\",\n    \"total_price\": 20000,\n    \"quantity\": 2,\n    \"status\": \"due\"\n  }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Installments",
+			"item": [
+				{
+					"name": "GET /installments/",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/installments/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"installments",
+								""
+							]
+						},
+						"description": "List all installments for the authenticated user.\n\n**Permissions**: Authenticated users."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/installments/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"installments",
+										""
+									]
+								},
+								"description": "List all installments for the authenticated user.\n\n**Permissions**: Authenticated users."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 1,\n    \"product_name\": \"Laptop\",\n    \"total_price\": \"20000\",\n    \"quantity\": \"2\",\n    \"installment_number\": 1,\n    \"paid_amount\": 6000,\n    \"due_amount\": 0,\n    \"due_date\": \"2025-05-19T00:00:00Z\",\n    \"status\": \"paid\",\n    \"payment_date\": \"2025-04-19T00:00:00Z\"\n  }\n]"
+						},
+						{
+							"name": "Error - No Installments",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/installments/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"installments",
+										""
+									]
+								},
+								"description": "List all installments for the authenticated user.\n\n**Permissions**: Authenticated users."
+							},
+							"status": 404,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"detail\": \"No installments found.\"}"
+						}
+					]
+				},
+				{
+					"name": "GET /installments/next-due/",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/installments/next-due/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"installments",
+								"next-due",
+								""
+							]
+						},
+						"description": "Get the next due installment for the authenticated user.\n\n**Permissions**: Authenticated users."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/installments/next-due/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"installments",
+										"next-due",
+										""
+									]
+								},
+								"description": "Get the next due installment for the authenticated user.\n\n**Permissions**: Authenticated users."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n  \"id\": 2,\n  \"product_name\": \"Laptop\",\n  \"installment_number\": 2,\n  \"due_amount\": \"7000\",\n  \"due_date\": \"2025-06-19T00:00:00Z\",\n  \"status\": \"due\"\n}"
+						},
+						{
+							"name": "Error - No Due Installments",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/installments/next-due/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"installments",
+										"next-due",
+										""
+									]
+								},
+								"description": "Get the next due installment for the authenticated user.\n\n**Permissions**: Authenticated users."
+							},
+							"status": 404,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"detail\": \"No due installments found.\"}"
+						}
+					]
+				},
+				{
+					"name": "POST /installments/pay/{installment_id}/",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 7000\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/installments/pay/2/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"installments",
+								"pay",
+								"2",
+								""
+							]
+						},
+						"description": "Pay an installment.\n\n**Fields**:\n- `amount`: Decimal, required.\n\n**Validations**:\n- Amount must cover due amount (plus 10% penalty if late).\n- Cannot overpay.\n\n**Permissions**: Authenticated users."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 7000\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/installments/pay/2/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"installments",
+										"pay",
+										"2",
+										""
+									]
+								},
+								"description": "Pay an installment.\n\n**Fields**:\n- `amount`: Decimal, required.\n\n**Validations**:\n- Amount must cover due amount (plus 10% penalty if late).\n- Cannot overpay.\n\n**Permissions**: Authenticated users."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"detail\": \"Payment successful.\"}"
+						},
+						{
+							"name": "Error - Late Payment",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 7000\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/installments/pay/2/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"installments",
+										"pay",
+										"2",
+										""
+									]
+								},
+								"description": "Pay an installment.\n\n**Fields**:\n- `amount`: Decimal, required.\n\n**Validations**:\n- Amount must cover due amount (plus 10% penalty if late).\n- Cannot overpay.\n\n**Permissions**: Authenticated users."
+							},
+							"status": 400,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"non_field_errors\": \"Late payment! You must pay the full amount including penalty: ৳7700.00\"}"
+						},
+						{
+							"name": "Error - Overpayment",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 7000\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/installments/pay/2/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"installments",
+										"pay",
+										"2",
+										""
+									]
+								},
+								"description": "Pay an installment.\n\n**Fields**:\n- `amount`: Decimal, required.\n\n**Validations**:\n- Amount must cover due amount (plus 10% penalty if late).\n- Cannot overpay.\n\n**Permissions**: Authenticated users."
+							},
+							"status": 400,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"non_field_errors\": \"You cannot pay more than the required amount: ৳7000.00\"}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "GET /public/global-summary/",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/public/global-summary/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"public",
+								"global-summary",
+								""
+							]
+						},
+						"description": "Get global dashboard summary (total products).\n\n**Permissions**: Public."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/public/global-summary/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"public",
+										"global-summary",
+										""
+									]
+								},
+								"description": "Get global dashboard summary (total products).\n\n**Permissions**: Public."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\"total_products\": 10}"
+						}
+					]
+				},
+				{
+					"name": "GET /user/summary/",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user/summary/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"summary",
+								""
+							]
+						},
+						"description": "Get user dashboard summary (total due, paid, purchases, installments).\n\n**Permissions**: Authenticated users."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/summary/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"summary",
+										""
+									]
+								},
+								"description": "Get user dashboard summary (total due, paid, purchases, installments).\n\n**Permissions**: Authenticated users."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n  \"total_due\": 14000,\n  \"total_paid\": 6000,\n  \"total_purchase\": 2,\n  \"installment_left\": 2,\n  \"installment_paid\": 1\n}"
+						}
+					]
+				},
+				{
+					"name": "GET /user-stats/",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user-stats/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user-stats",
+								""
+							]
+						},
+						"description": "Get user statistics (total, verified, not verified).\n\n**Permissions**: Admin only."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user-stats/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user-stats",
+										""
+									]
+								},
+								"description": "Get user statistics (total, verified, not verified).\n\n**Permissions**: Admin only."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n  \"total_users\": 100,\n  \"verified_users\": 80,\n  \"not_verified_users\": 20\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "GET /reports/chart/summary/",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reports/chart/summary/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reports",
+								"chart",
+								"summary",
+								""
+							]
+						},
+						"description": "Get monthly payment summary for charts (last 6 months).\n\n**Permissions**: Admin only."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/reports/chart/summary/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"reports",
+										"chart",
+										"summary",
+										""
+									]
+								},
+								"description": "Get monthly payment summary for charts (last 6 months).\n\n**Permissions**: Admin only."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n  \"labels\": [\"November\", \"December\", \"January\", \"February\", \"March\", \"April\"],\n  \"datasets\": {\n    \"total_purchases\": [100000, 150000, 200000, 180000, 170000, 190000],\n    \"total_paid\": [50000, 80000, 120000, 100000, 90000, 110000],\n    \"total_due\": [50000, 70000, 80000, 80000, 80000, 80000]\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "GET /reports/payment-summary/weekly/",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reports/payment-summary/weekly/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reports",
+								"payment-summary",
+								"weekly",
+								""
+							]
+						},
+						"description": "Get weekly payment summary for all users.\n\n**Permissions**: Admin only."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/reports/payment-summary/weekly/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"reports",
+										"payment-summary",
+										"weekly",
+										""
+									]
+								},
+								"description": "Get weekly payment summary for all users.\n\n**Permissions**: Admin only."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 1,\n    \"username\": \"john_doe\",\n    \"email\": \"john@example.com\",\n    \"total_paid_amount\": 6000,\n    \"total_due_amount\": 14000,\n    \"total_purchase_count\": 2,\n    \"total_product_quantity\": 3,\n    \"total_installment_count\": 3,\n    \"fully_paid_purchases\": 0,\n    \"due_purchases\": 2,\n    \"overall_status\": \"due\"\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "GET /reports/payment-summary/monthly/",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reports/payment-summary/monthly/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reports",
+								"payment-summary",
+								"monthly",
+								""
+							]
+						},
+						"description": "Get monthly payment summary for all users.\n\n**Permissions**: Admin only."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/reports/payment-summary/monthly/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"reports",
+										"payment-summary",
+										"monthly",
+										""
+									]
+								},
+								"description": "Get monthly payment summary for all users.\n\n**Permissions**: Admin only."
+							},
+							"status": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 1,\n    \"username\": \"john_doe\",\n    \"email\": \"john@example.com\",\n    \"total_paid_amount\": 6000,\n    \"total_due_amount\": 14000,\n    \"total_purchase_count\": 2,\n    \"total_product_quantity\": 3,\n    \"total_installment_count\": 3,\n    \"fully_paid_purchases\": 0,\n    \"due_purchases\": 2,\n    \"overall_status\": \"due\"\n  }\n]"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		}
+	]
+}

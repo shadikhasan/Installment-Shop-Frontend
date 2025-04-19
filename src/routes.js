@@ -1,6 +1,7 @@
 import React from 'react'
 import AdminRoute from './components/AdminRoute'
 
+const About = React.lazy(() => import('./views/About/About'))
 const Products = React.lazy(() => import('./views/products/Products'))
 const Profile = React.lazy(() => import('./views/profile/Profile'))
 const AddPurchaseForm = React.lazy(() => import('./views/purchase/AddPurchaseForm'))
@@ -66,6 +67,7 @@ const AdminDashboard = () => (
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
+  { path: '/about', name: 'About', element: About },
   { path: '/products', name: 'Products', element: Products },
   { path: '/profile', name: 'Profile', element: Profile },
   { path: '/installments', name: 'Installments', element: Installments },
