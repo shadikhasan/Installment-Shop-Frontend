@@ -117,5 +117,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For any questions or issues, feel free to open an issue on GitHub or reach out to the project maintainers.
 
-- **Author**: Shadik Hasan
+- **Author**:  EKRAMUL ISLAM SHADIK
 - **GitHub**: [shadikhasan](https://github.com/shadikhasan)
