@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   CAvatar,
   CBadge,
@@ -22,34 +22,56 @@ import avatar8 from './../../assets/images/avatars/8.jpg'
 
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { jwtDecode } from 'jwt-decode';
 
 const AppHeaderDropdown = () => {
   const navigate = useNavigate()
 
-  const isLoggedIn = localStorage.getItem('access_token') !== null
-
   const handleLogout = () => {
-    // Remove token from localStorage (adjust key if different)
     localStorage.removeItem('access_token')
     localStorage.removeItem('refresh_token')
     localStorage.removeItem('is_staff')
     localStorage.removeItem('is_superuser')
 
-    // Show logout success toast
     toast.success('Successfully logged out!', {
       position: 'top-right',
       autoClose: 2000,
     })
 
-    // Redirect to login after short delay
     setTimeout(() => {
       navigate('/login')
     }, 100)
   }
 
   const handleProfileClick = () => {
-    navigate('/profile') // Navigate to profile page
+    navigate('/profile')
   }
+
+  // Auto logout logic
+  useEffect(() => {
+    const token = localStorage.getItem('access_token')
+    if (token) {
+      try {
+        const decoded = jwtDecode(token)
+        const exp = decoded.exp * 1000
+        const timeout = exp - Date.now()
+
+        if (timeout <= 0) {
+          handleLogout()
+        } else {
+          const timer = setTimeout(() => {
+            toast.info('Session expired. Logging out...')
+            handleLogout()
+          }, timeout)
+
+          return () => clearTimeout(timer)
+        }
+      } catch (err) {
+        console.error('Token decode error:', err)
+        handleLogout()
+      }
+    }
+  }, [])
 
   return (
     <CDropdown variant="nav-item">
@@ -83,7 +105,7 @@ const AppHeaderDropdown = () => {
           <CBadge color="secondary" className="ms-2">42</CBadge>
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="#" onClick={handleLogout}>
+        <CDropdownItem onClick={handleLogout}>
           <CIcon icon={cilAccountLogout} className="me-2 text-danger" />
           <label className='text-danger'> Logout </label>
         </CDropdownItem>

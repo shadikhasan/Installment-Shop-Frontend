@@ -1,14 +1,15 @@
 import React from 'react'
 import AdminRoute from './components/AdminRoute'
 
-const About = React.lazy(() => import('./views/About/About'))
-const Products = React.lazy(() => import('./views/products/Products'))
-const Profile = React.lazy(() => import('./views/profile/Profile'))
-const AddPurchaseForm = React.lazy(() => import('./views/purchase/AddPurchaseForm'))
-const Installments = React.lazy(() => import('./views/installments/InstallmentsPage'))
-const Reports = React.lazy(() => import('./views/reports/Reports'))
-
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+const Products = React.lazy(() => import('./views/products/Products'))
+const Installments = React.lazy(() => import('./views/installments/InstallmentsPage'))
+const AddPurchaseForm = React.lazy(() => import('./views/purchase/AddPurchaseForm'))
+const Reports = React.lazy(() => import('./views/reports/Reports'))
+const About = React.lazy(() => import('./views/About/About'))
+
+const Profile = React.lazy(() => import('./views/profile/Profile'))
+
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
