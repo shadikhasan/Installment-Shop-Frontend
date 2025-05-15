@@ -53,6 +53,18 @@ const Login = () => {
       localStorage.setItem('is_superuser', is_superuser)
 
       toast.success('Login successful! Redirecting to dashboard...')
+
+      setTimeout(() => {
+        toast.info('Please refresh the page.', {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })
+      }, 3000) // delay in milliseconds (2000ms = 2 seconds)
+
       navigate('/dashboard')
     } catch (err) {
       setError('Invalid credentials or error occurred.')
@@ -62,7 +74,7 @@ const Login = () => {
 
   return (
     <>
-    <AppHeader />
+      <AppHeader />
       <div className="bg-body-tertiary min-vh-100 d-flex flex-row mt-5">
         <CContainer>
           <CRow className="justify-content-center">
